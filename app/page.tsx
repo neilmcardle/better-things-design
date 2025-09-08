@@ -85,7 +85,7 @@ function ClientCard({ client, onMouseEnter, onMouseLeave }) {
           left: 60px;
           bottom: 65px;
           background: #000;
-          color: #1b1b1b;
+          color: #f6f6f6ff;
           border-radius: 20px;
           min-width: 300px;
           max-width: 330px;
@@ -129,7 +129,7 @@ function ClientCard({ client, onMouseEnter, onMouseLeave }) {
         .client-name {
           font-size: 1.1rem;
           font-weight: 700;
-          color: #1b1b1b;
+          color: #f6f6f6ff;
           text-transform: uppercase;
           letter-spacing: 0.04em;
           margin-bottom: 4px;
@@ -221,7 +221,7 @@ function PlusCard({ onMouseEnter, onMouseLeave }) {
           left: 60px;
           bottom: 65px;
           background: #000;
-          color: #1b1b1b;
+          color: #f6f6f6ff;
           border-radius: 20px;
           box-shadow: 0 4px 24px #000a;
           padding: 18px 18px 15px 18px;
@@ -238,7 +238,7 @@ function PlusCard({ onMouseEnter, onMouseLeave }) {
         .client-name {
           font-size: 1.1rem;
           font-weight: 700;
-          color: #1b1b1b;
+          color: #f6f6f6ff;
           margin-bottom: 4px;
           text-transform: uppercase;
           letter-spacing: 0.04em;
@@ -429,7 +429,7 @@ export default function Home() {
           .terminal-content {
             margin-top: 80px;
             font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-            color: #1b1b1b;
+            color: #f6f6f6ff;
             font-size: 1.13rem;
             line-height: 2.15rem;
             max-width: 900px;
