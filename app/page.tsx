@@ -22,7 +22,7 @@ const clients = [
     id: 1,
     name: "Gatewick House & Gardens",
     logo: "/images/gatewick-house-logo.png",
-    description: "Logo Design",
+    description: "Logo and signage design",
     link: {
       url: "https://www.instagram.com/gatewick_gardens/",
     }
@@ -85,13 +85,13 @@ function ClientCard({ client, onMouseEnter, onMouseLeave }) {
           left: 60px;
           bottom: 65px;
           background: #000;
-          color: #e6e6e6;
+          color: #1b1b1b;
           border-radius: 20px;
           min-width: 300px;
           max-width: 330px;
           box-shadow: 0 8px 36px #000a;
           padding: 22px 20px 18px 20px;
-          font-family: 'Fira Mono', 'Menlo', 'Consolas', monospace;
+          font-family: 'Montserrat', Arial, Helvetica, sans-serif;
           z-index: 20;
           overflow: hidden;
           animation: fadeIn 0.13s;
@@ -127,19 +127,23 @@ function ClientCard({ client, onMouseEnter, onMouseLeave }) {
           flex-direction: column;
         }
         .client-name {
-          font-size: 16px;
+          font-size: 1.1rem;
           font-weight: 700;
-          color: #fff;
-          line-height: 1.22;
+          color: #1b1b1b;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
           margin-bottom: 4px;
+          font-family: 'Montserrat', Arial, Helvetica, sans-serif;
         }
         .client-desc {
-          font-size: 12px;
-          color: #bababa;
-          margin-bottom: 4px; /* Reduced from 8px to 4px for 8-point system, tighter spacing */
+          font-size: 0.95rem;
+          color: #333;
+          margin-bottom: 4px;
+          font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+          font-weight: 400;
         }
         .client-link {
-          font-size: 10px;
+          font-size: 0.85rem;
           color: #1d9bf0;
           text-decoration: none;
           word-break: normal;
@@ -148,8 +152,9 @@ function ClientCard({ client, onMouseEnter, onMouseLeave }) {
           text-overflow: ellipsis;
           max-width: 180px;
           display: inline-block;
-          /* Remove margin-top or set to 0 to keep spacing tight */
           margin-top: 0;
+          font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+          font-weight: 400;
         }
         .client-link:hover {
           text-decoration: underline;
@@ -175,7 +180,7 @@ function ClientCard({ client, onMouseEnter, onMouseLeave }) {
             height: 44px;
           }
           .client-link {
-            font-size: 10px;
+            font-size: 0.85rem;
             max-width: 95vw;
           }
         }
@@ -216,11 +221,11 @@ function PlusCard({ onMouseEnter, onMouseLeave }) {
           left: 60px;
           bottom: 65px;
           background: #000;
-          color: #e6e6e6;
+          color: #1b1b1b;
           border-radius: 20px;
           box-shadow: 0 4px 24px #000a;
           padding: 18px 18px 15px 18px;
-          font-family: 'Fira Mono', 'Menlo', 'Consolas', monospace;
+          font-family: 'Montserrat', Arial, Helvetica, sans-serif;
           z-index: 20;
           overflow: hidden;
           animation: fadeIn 0.16s;
@@ -231,20 +236,25 @@ function PlusCard({ onMouseEnter, onMouseLeave }) {
           gap: 4px;
         }
         .client-name {
-          font-size: 16px;
+          font-size: 1.1rem;
           font-weight: 700;
-          color: #fff;
+          color: #1b1b1b;
           margin-bottom: 4px;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          font-family: 'Montserrat', Arial, Helvetica, sans-serif;
         }
         .client-link {
-          font-size: 10px;
+          font-size: 0.85rem;
           color: #1d9bf0;
           text-decoration: none;
           word-break: break-all;
           display: flex;
           align-items: center;
           gap: 4px;
-          margin-top: 0; /* Tighten spacing above link */
+          margin-top: 0;
+          font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+          font-weight: 400;
         }
         .client-link:hover {
           text-decoration: underline;
@@ -271,7 +281,7 @@ function PlusCard({ onMouseEnter, onMouseLeave }) {
             overflow: hidden !important;
           }
           .client-link {
-            font-size: 10px;
+            font-size: 0.85rem;
             max-width: 95vw;
           }
         }
@@ -318,10 +328,10 @@ export default function Home() {
       }}
     >
       <div className="terminal-content">
-        <div>Look.</div>
-        <div style={{ marginTop: "2.5rem" }}>I build ideas.</div>
-        <div style={{ marginTop: "2.5rem" }}>I do not have a niche to sell you.</div>
-        <div style={{ marginTop: "2.5rem" }}>
+        <div className="main-title">Look.</div>
+        <div className="main-mid" style={{ marginTop: "2.5rem" }}>I build ideas.</div>
+        <div className="main-mid" style={{ marginTop: "2.5rem" }}>I do not have a niche to sell you.</div>
+        <div className="main-mid" style={{ marginTop: "2.5rem" }}>
           Instead, for you, I am convinced of better things.
         </div>
         <div style={{ marginTop: "2.5rem" }}>
@@ -341,7 +351,7 @@ export default function Home() {
               onMouseLeave={() => close(i)}
               onBlur={() => close(i)}
               onClick={e => {
-                e.preventDefault();
+                // Don't preventDefault so links work as normal
                 open(i);
               }}
               onKeyDown={e => {
@@ -385,7 +395,6 @@ export default function Home() {
             onMouseLeave={() => close(clients.length)}
             onBlur={() => close(clients.length)}
             onClick={e => {
-              e.preventDefault();
               open(clients.length);
             }}
             onKeyDown={e => {
@@ -419,13 +428,30 @@ export default function Home() {
           }
           .terminal-content {
             margin-top: 80px;
-            font-family: 'Fira Mono', 'Menlo', 'Consolas', monospace;
-            color: #e0e0e0;
-            font-size: 1.19rem;
-            line-height: 2.2rem;
+            font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+            color: #1b1b1b;
+            font-size: 1.13rem;
+            line-height: 2.15rem;
             max-width: 900px;
             word-break: break-word;
             margin-left: 0;
+          }
+          .main-title {
+            font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+            font-weight: 700;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 16px;
+            color: #f6f6f6ff;
+          }
+          .main-mid {
+            font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+            font-size: 1.13rem;
+            font-weight: 400;
+            line-height: 2rem;
+            color: #f6f6f6ff;
+            margin-bottom: 0px;
           }
           .flashing-cursor {
             display: inline-block;
@@ -484,6 +510,14 @@ export default function Home() {
               margin-left: 16px;
               margin-right: 0;
               font-size: 1.08rem;
+            }
+            .main-title {
+              font-size: 1.14rem;
+              margin-bottom: 8px;
+            }
+            .main-mid {
+              font-size: 1.02rem;
+              line-height: 1.6rem;
             }
             .client-circles-row {
               gap: 1.1rem;
