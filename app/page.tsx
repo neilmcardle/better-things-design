@@ -2,17 +2,20 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 
-// Helper to strip the protocol and www. from URLs for display
+// Helper to strip protocol and www.
 function formatDisplayLink(url: string) {
   try {
     const u = new URL(url);
-    let display = u.host.replace(/^www\./, "") + u.pathname;
+    let host = u.host.replace(/^www\./, "");
+    let display = host + u.pathname;
     if (!display.endsWith("/")) display += "/";
     return display;
   } catch {
     return url;
   }
 }
+
+const CYAN = "#00f0e0"; // Pulsing cyan cursor color
 
 const clients = [
   {
@@ -35,7 +38,8 @@ const clients = [
   }
 ];
 
-function ClientCard({ client, onClose, onMouseEnter, onMouseLeave }) {
+function ClientCard({ client, onMouseEnter, onMouseLeave }) {
+  const descLines = client.description.split("\n");
   return (
     <div
       className="client-card"
@@ -43,36 +47,28 @@ function ClientCard({ client, onClose, onMouseEnter, onMouseLeave }) {
       onMouseLeave={onMouseLeave}
       tabIndex={-1}
     >
-      <button
-        className="close-btn"
-        onClick={onClose}
-        tabIndex={0}
-        aria-label="Close profile card"
-      >
-        ×
-      </button>
       <div className="card-content">
         <div className="logo-col">
-          <Image
-            src={client.logo}
-            alt={client.name}
-            width={56}
-            height={56}
-            className="client-logo"
-            style={{
-              borderRadius: 12,
-              background: "#232323",
-              objectFit: "contain",
-              border: "1.5px solid #666",
-              marginBottom: 4,
-              marginRight: 0
-            }}
-            unoptimized
-          />
+          <div className="card-avatar-circle">
+            <Image
+              src={client.logo}
+              alt={client.name}
+              width={48}
+              height={48}
+              style={{
+                borderRadius: "50%",
+                background: "#232323",
+                objectFit: "contain"
+              }}
+              unoptimized
+            />
+          </div>
         </div>
         <div className="info-col">
           <div className="client-name">{client.name}</div>
-          <div className="client-desc">{client.description}</div>
+          {descLines.map((line, idx) => (
+            <div className="client-desc" key={idx}>{line}</div>
+          ))}
           <a
             className="client-link"
             href={client.link.url}
@@ -88,118 +84,116 @@ function ClientCard({ client, onClose, onMouseEnter, onMouseLeave }) {
           position: absolute;
           left: 60px;
           bottom: 65px;
-          background: #181818;
+          background: #000;
           color: #e6e6e6;
-          border-radius: 24px;
-          min-width: 330px;
-          max-width: 400px;
-          box-shadow: 0 10px 48px #000a;
-          padding: 24px 28px 22px 24px;
+          border-radius: 20px;
+          min-width: 300px;
+          max-width: 330px;
+          box-shadow: 0 8px 36px #000a;
+          padding: 22px 20px 18px 20px;
           font-family: 'Fira Mono', 'Menlo', 'Consolas', monospace;
-          font-size: 15px;
           z-index: 20;
+          overflow: hidden;
           animation: fadeIn 0.13s;
         }
         @keyframes fadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-        .close-btn {
-          position: absolute;
-          top: 13px;
-          right: 18px;
-          background: none;
-          border: none;
-          color: #888;
-          font-size: 1.32rem;
-          cursor: pointer;
-          padding: 0;
-          line-height: 1;
-          transition: color 0.15s;
-        }
-        .close-btn:hover {
-          color: #fff;
-        }
         .card-content {
           display: flex;
           flex-direction: row;
           align-items: flex-start;
-          gap: 20px;
+          gap: 15px;
         }
         .logo-col {
           flex: none;
           display: flex;
           align-items: flex-start;
         }
-        .client-logo {
-          box-shadow: 0 1.5px 8px #0002;
+        .card-avatar-circle {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          border: 2.5px solid #bbb;
+          background: #181818;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         .info-col {
           flex: 1 1 auto;
           display: flex;
           flex-direction: column;
-          gap: 7px;
         }
         .client-name {
-          font-size: 1.28rem;
+          font-size: 16px;
           font-weight: 700;
-          margin-bottom: 1px;
           color: #fff;
-          line-height: 1.19;
+          line-height: 1.22;
+          margin-bottom: 4px;
         }
         .client-desc {
-          font-size: 1.02rem;
+          font-size: 12px;
           color: #bababa;
-          margin-bottom: 3px;
+          margin-bottom: 8px;
         }
         .client-link {
-          font-size: 0.92rem;
+          font-size: 10px;
           color: #1d9bf0;
           text-decoration: none;
-          margin-top: 0;
+          margin-top: 0px;
           word-break: normal;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 225px;
+          max-width: 180px;
           display: inline-block;
-          font-family: inherit;
         }
         .client-link:hover {
           text-decoration: underline;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
           .client-card {
-            min-width: unset;
-            max-width: 98vw;
-            left: 18px;
-            bottom: 20px;
-            padding: 12px 7px 10px 7px;
+            position: fixed !important;
+            left: 16px !important;
+            right: 16px !important;
+            width: auto !important;
+            max-width: calc(100vw - 32px) !important;
+            bottom: 16px !important;
+            min-width: 0;
+            background: #000 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 8px 36px #000a !important;
+            padding: 14px 10px 14px 12px !important;
+            z-index: 1000 !important;
+            overflow: hidden !important;
           }
-          .client-logo {
-            width: 44px !important;
-            height: 44px !important;
+          .card-avatar-circle {
+            width: 44px;
+            height: 44px;
           }
-          .client-name { font-size: 1.08rem; }
-          .client-link { max-width: 100px; }
+          .client-link {
+            font-size: 10px;
+            max-width: 95vw;
+          }
         }
       `}</style>
     </div>
   );
 }
 
-function PlusCard({ onClose, onMouseEnter, onMouseLeave }) {
+function PlusCard({ onMouseEnter, onMouseLeave }) {
   return (
     <div
       className="client-card"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       tabIndex={-1}
-      style={{ minWidth: 280, maxWidth: 320 }}
+      style={{ minWidth: 220, maxWidth: 320 }}
     >
       <div className="main-info">
-        <div className="client-name">Join the client list</div>
-        {/* <div className="client-desc">Get in touch:</div> */}
+        {/* <div className="client-name">Join the client list</div> */}
         <a
           className="client-link"
           href="mailto:neil@betterthings.design"
@@ -209,68 +203,60 @@ function PlusCard({ onClose, onMouseEnter, onMouseLeave }) {
           neil@betterthings.design
         </a>
       </div>
-      <button
-        className="close-btn"
-        onClick={onClose}
-        tabIndex={0}
-        aria-label="Close contact card"
-      >
-        ×
-      </button>
       <style jsx>{`
         .client-card {
           position: absolute;
           left: 60px;
           bottom: 65px;
-          background: #181818;
+          background: #000;
           color: #e6e6e6;
           border-radius: 20px;
           box-shadow: 0 4px 24px #000a;
           padding: 18px 18px 15px 18px;
           font-family: 'Fira Mono', 'Menlo', 'Consolas', monospace;
-          font-size: 14px;
           z-index: 20;
+          overflow: hidden;
           animation: fadeIn 0.16s;
         }
         .main-info {
           display: flex;
           flex-direction: column;
-          gap: 5px;
+          gap: 8px;
         }
         .client-name {
-          font-size: 16.5px;
+          font-size: 16px;
           font-weight: 700;
-          line-height: 1.18;
-        }
-        .client-desc {
-          font-size: 13.5px;
-          color: #bdbdbd;
+          color: #fff;
         }
         .client-link {
-          font-size: 13.5px;
+          font-size: 10px;
           color: #1d9bf0;
           text-decoration: none;
-          margin-top: 1px;
           word-break: break-all;
         }
         .client-link:hover {
           text-decoration: underline;
         }
-        .close-btn {
-          position: absolute;
-          top: 7px;
-          right: 12px;
-          background: none;
-          border: none;
-          color: #888;
-          font-size: 1.23rem;
-          cursor: pointer;
-          padding: 0;
-          line-height: 1;
-          transition: color 0.15s;
-        }
-        .close-btn:hover {
-          color: #fff;
+        @media (max-width: 650px) {
+          .client-card {
+            position: fixed !important;
+            left: 16px !important;
+            right: 16px !important;
+            width: auto !important;
+            max-width: calc(100vw - 32px) !important;
+            bottom: 16px !important;
+            min-width: 0;
+            background: #000 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 8px 36px #000a !important;
+            padding: 14px 10px 14px 12px !important;
+            z-index: 1000 !important;
+            overflow: hidden !important;
+          }
+          .client-link {
+            font-size: 10px;
+            max-width: 95vw;
+          }
         }
       `}</style>
     </div>
@@ -347,23 +333,24 @@ export default function Home() {
               }}
               style={{ zIndex: openIdx === i ? 21 : 1, position: "relative" }}
             >
-              <Image
-                src={c.logo}
-                alt={c.name}
-                width={40}
-                height={40}
-                style={{
-                  objectFit: "contain",
-                  borderRadius: 10,
-                  background: "#222",
-                  border: "none"
-                }}
-                unoptimized
-              />
+              <span className="circle-avatar">
+                <Image
+                  src={c.logo}
+                  alt={c.name}
+                  width={40}
+                  height={40}
+                  style={{
+                    objectFit: "contain",
+                    borderRadius: "50%",
+                    background: "#232323",
+                    border: "none"
+                  }}
+                  unoptimized
+                />
+              </span>
               {openIdx === i && (
                 <ClientCard
                   client={c}
-                  onClose={() => close(i, false)}
                   onMouseEnter={() => open(i)}
                   onMouseLeave={() => close(i)}
                 />
@@ -393,13 +380,14 @@ export default function Home() {
               position: "relative"
             }}
           >
-            <svg width="27" height="27" viewBox="0 0 28 28" aria-hidden="true" style={{ display: "block" }}>
-              <circle cx="14" cy="14" r="13" fill="#232323" stroke="#666" strokeWidth="1.5"/>
-              <path d="M14 8.5v11M8.5 14h11" stroke="#e6e6e6" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
+            <span className="circle-avatar">
+              <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true" style={{ display: "block" }}>
+                <rect x="0" y="0" width="34" height="34" rx="17" fill="#232323" />
+                <path d="M17 11v12M11 17h12" stroke={CYAN} strokeWidth="2.2" strokeLinecap="round"/>
+              </svg>
+            </span>
             {openIdx === clients.length && (
               <PlusCard
-                onClose={() => close(clients.length, false)}
                 onMouseEnter={() => open(clients.length)}
                 onMouseLeave={() => close(clients.length)}
               />
@@ -420,6 +408,7 @@ export default function Home() {
             line-height: 2.2rem;
             max-width: 900px;
             word-break: break-word;
+            margin-left: 0;
           }
           .flashing-cursor {
             display: inline-block;
@@ -437,11 +426,11 @@ export default function Home() {
             position: relative;
           }
           .client-circle {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
             background: #232323;
-            border: 2px solid rgba(100,100,100,0.18);
+            border: 2.5px solid rgba(220,220,220,0.23);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -449,20 +438,53 @@ export default function Home() {
             transition: border-color 0.18s, box-shadow 0.16s, background 0.22s, opacity 0.2s, filter 0.2s;
             outline: none;
             position: relative;
-            box-shadow: 0 2px 10px #0002;
+            box-shadow: 0 2px 10px #0003;
             opacity: 0.38;
           }
           .client-circle-active,
           .client-circle:focus,
           .client-circle:hover {
-            border-color: #e0e0e0;
+            border-color: #fff;
             background: #282828;
             opacity: 1;
           }
-          .plus svg {
-            width: 31px;
-            height: 31px;
+          .circle-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: none;
+          }
+          .plus .circle-avatar svg {
+            width: 34px;
+            height: 34px;
             display: block;
+          }
+          @media (max-width: 650px) {
+            .terminal-content {
+              margin-left: 16px;
+              margin-right: 0;
+              font-size: 1.08rem;
+            }
+            .client-circles-row {
+              gap: 1.1rem;
+              margin-top: 1.6rem;
+              margin-bottom: 1.2rem;
+            }
+            .client-circle {
+              width: 52px;
+              height: 52px;
+              min-width: 52px;
+              min-height: 52px;
+            }
+            .circle-avatar {
+              width: 40px;
+              height: 40px;
+              min-width: 40px;
+              min-height: 40px;
+            }
           }
         `}</style>
       </div>
