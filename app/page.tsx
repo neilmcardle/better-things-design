@@ -158,10 +158,110 @@ function ClientCard({ client, onClose, onMouseEnter, onMouseLeave }) {
   );
 }
 
+function PlusCard({ onClose, onMouseEnter, onMouseLeave }) {
+  return (
+    <div
+      className="client-card"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      tabIndex={-1}
+      style={{ minWidth: 280, maxWidth: 320 }}
+    >
+      <div className="main-info">
+        <div className="client-name">Want to be a client?</div>
+        <div className="client-desc">Get in touch:</div>
+        <a
+          className="client-link"
+          href="mailto:neil@betterthings.design"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          neil@betterthings.design
+        </a>
+      </div>
+      <button
+        className="close-btn"
+        onClick={onClose}
+        tabIndex={0}
+        aria-label="Close contact card"
+      >
+        ×
+      </button>
+      <style jsx>{`
+        .client-card {
+          position: absolute;
+          left: 60px;
+          bottom: 65px;
+          background: #181818;
+          color: #e6e6e6;
+          border-radius: 20px;
+          box-shadow: 0 4px 24px #000a;
+          padding: 18px 18px 15px 18px;
+          font-family: 'Segoe UI', 'Fira Mono', 'Menlo', 'Consolas', monospace;
+          font-size: 14px;
+          z-index: 20;
+          animation: fadeIn 0.16s;
+        }
+        .main-info {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+        .client-name {
+          font-size: 16.5px;
+          font-weight: 700;
+          line-height: 1.18;
+        }
+        .client-desc {
+          font-size: 13.5px;
+          color: #bdbdbd;
+        }
+        .client-link {
+          font-size: 13.5px;
+          color: #1d9bf0;
+          text-decoration: none;
+          margin-top: 1px;
+          word-break: break-all;
+        }
+        .client-link:hover {
+          text-decoration: underline;
+        }
+        .close-btn {
+          position: absolute;
+          top: 7px;
+          right: 12px;
+          background: none;
+          border: none;
+          color: #888;
+          font-size: 1.23rem;
+          cursor: pointer;
+          padding: 0;
+          line-height: 1;
+          transition: color 0.15s;
+        }
+        .close-btn:hover {
+          color: #fff;
+        }
+        @media (max-width: 600px) {
+          .client-card {
+            min-width: unset;
+            max-width: 96vw;
+            left: 38px;
+            bottom: 39px;
+            padding: 10px 6px 10px 6px;
+          }
+          .client-name { font-size: 15px; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function Home() {
   const [openIdx, setOpenIdx] = useState(null);
   const closeTimeout = useRef();
 
+  // 0,1: client cards; 2: plus card
   function open(i) {
     clearTimeout(closeTimeout.current);
     setOpenIdx(i);
@@ -250,6 +350,42 @@ export default function Home() {
               )}
             </div>
           ))}
+          {/* Plus icon circle */}
+          <div
+            className={
+              "client-circle plus" + (openIdx === clients.length ? " client-circle-active" : "")
+            }
+            tabIndex={0}
+            aria-label="Contact to become a client"
+            onMouseEnter={() => open(clients.length)}
+            onFocus={() => open(clients.length)}
+            onMouseLeave={() => close(clients.length)}
+            onBlur={() => close(clients.length)}
+            onClick={e => {
+              e.preventDefault();
+              open(clients.length);
+            }}
+            onKeyDown={e => {
+              if (e.key === "Enter" || e.key === " ") open(clients.length);
+              if (e.key === "Escape") close(clients.length, false);
+            }}
+            style={{
+              zIndex: openIdx === clients.length ? 21 : 1,
+              position: "relative"
+            }}
+          >
+            <svg width="27" height="27" viewBox="0 0 28 28" aria-hidden="true" style={{ display: "block" }}>
+              <circle cx="14" cy="14" r="13" fill="#232323" stroke="#666" strokeWidth="1.5"/>
+              <path d="M14 8.5v11M8.5 14h11" stroke="#e6e6e6" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            {openIdx === clients.length && (
+              <PlusCard
+                onClose={() => close(clients.length, false)}
+                onMouseEnter={() => open(clients.length)}
+                onMouseLeave={() => close(clients.length)}
+              />
+            )}
+          </div>
         </div>
         <style jsx>{`
           @keyframes blink {
@@ -319,6 +455,11 @@ export default function Home() {
           .client-circle:focus img,
           .client-circle:hover img {
             opacity: 1;
+          }
+          .plus svg {
+            width: 31px;
+            height: 31px;
+            display: block;
           }
         `}</style>
       </div>
