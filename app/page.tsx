@@ -22,7 +22,7 @@ const clients = [
     id: 1,
     name: "Gatewick House & Gardens",
     logo: "/images/gatewick-house-logo.png",
-    description: "Logo and signage design",
+    description: "Logo Design",
     link: {
       url: "https://www.instagram.com/gatewick_gardens/",
     }
