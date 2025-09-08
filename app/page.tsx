@@ -136,19 +136,20 @@ function ClientCard({ client, onMouseEnter, onMouseLeave }) {
         .client-desc {
           font-size: 12px;
           color: #bababa;
-          margin-bottom: 8px;
+          margin-bottom: 4px; /* Reduced from 8px to 4px for 8-point system, tighter spacing */
         }
         .client-link {
           font-size: 10px;
           color: #1d9bf0;
           text-decoration: none;
-          margin-top: 0px;
           word-break: normal;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           max-width: 180px;
           display: inline-block;
+          /* Remove margin-top or set to 0 to keep spacing tight */
+          margin-top: 0;
         }
         .client-link:hover {
           text-decoration: underline;
@@ -193,13 +194,19 @@ function PlusCard({ onMouseEnter, onMouseLeave }) {
       style={{ minWidth: 220, maxWidth: 320 }}
     >
       <div className="main-info">
-        {/* <div className="client-name">Join the client list</div> */}
+        <div className="client-name">Let's design better</div>
         <a
-          className="client-link"
+          className="client-link email-link"
           href="mailto:neil@betterthings.design"
           target="_blank"
           rel="noopener noreferrer"
         >
+          <span className="email-icon" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }}>
+              <rect x="1.1" y="2.1" width="10.8" height="8.8" rx="1.5" stroke="#1d9bf0" strokeWidth="1.2" fill="none"/>
+              <path d="M2.5 3.5L6.5 7L10.5 3.5" stroke="#1d9bf0" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
           neil@betterthings.design
         </a>
       </div>
@@ -221,21 +228,31 @@ function PlusCard({ onMouseEnter, onMouseLeave }) {
         .main-info {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 4px;
         }
         .client-name {
           font-size: 16px;
           font-weight: 700;
           color: #fff;
+          margin-bottom: 4px;
         }
         .client-link {
           font-size: 10px;
           color: #1d9bf0;
           text-decoration: none;
           word-break: break-all;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          margin-top: 0; /* Tighten spacing above link */
         }
         .client-link:hover {
           text-decoration: underline;
+        }
+        .email-icon {
+          display: inline-flex;
+          align-items: center;
+          margin-right: 2px;
         }
         @media (max-width: 650px) {
           .client-card {
