@@ -1,7 +1,190 @@
 "use client";
-import React from "react";
+import React, { useState, useRef } from "react";
+
+// Use relative paths for Next.js/public folder
+const clients = [
+  {
+    id: 1,
+    name: "Gatewick House & Gardens",
+    logo: "/images/gatewick-logo.png",
+    description: "Logo and signage design",
+    link: {
+      url: "https://www.instagram.com/gatewick_gardens/",
+      text: "instagram.com/gatewick_gardens/"
+    }
+  },
+  {
+    id: 2,
+    name: "The Dan Roberts Group",
+    logo: "/images/nuksoo-logo.png",
+    description: "Logo Design",
+    link: {
+      url: "https://danrobertsgroup.com/nuksoo/",
+      text: "danrobertsgroup.com/nuksoo/"
+    }
+  }
+];
+
+function ClientCard({ client, onClose, onMouseEnter, onMouseLeave }) {
+  return (
+    <div
+      className="client-card"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      tabIndex={-1}
+    >
+      <div className="card-row">
+        <div className="avatar-wrap">
+          <img className="avatar" src={client.logo} alt={client.name} />
+        </div>
+        <div className="main-info">
+          <div className="client-name">{client.name}</div>
+          <div className="client-desc">{client.description}</div>
+          <a
+            className="client-link"
+            href={client.link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {client.link.text}
+          </a>
+        </div>
+      </div>
+      <button
+        className="close-btn"
+        onClick={onClose}
+        tabIndex={0}
+        aria-label="Close profile card"
+      >
+        ×
+      </button>
+      <style jsx>{`
+        .client-card {
+          position: absolute;
+          left: 60px;
+          bottom: 65px;
+          background: #181818;
+          color: #e6e6e6;
+          border-radius: 20px;
+          min-width: 310px;
+          max-width: 340px;
+          box-shadow: 0 4px 24px #000a;
+          padding: 14px 18px 14px 18px;
+          font-family: 'Segoe UI', 'Fira Mono', 'Menlo', 'Consolas', monospace;
+          font-size: 14px;
+          z-index: 20;
+          animation: fadeIn 0.16s;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .card-row {
+          display: flex;
+          align-items: center;
+        }
+        .avatar-wrap {
+          flex: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 13px;
+        }
+        .avatar {
+          width: 52px;
+          height: 52px;
+          border-radius: 14px;
+          background: #232323;
+          object-fit: contain;
+          border: 1px solid #666;
+        }
+        .main-info {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .client-name {
+          font-size: 16.5px;
+          font-weight: 700;
+          line-height: 1.18;
+        }
+        .client-desc {
+          font-size: 13.5px;
+          color: #bdbdbd;
+        }
+        .client-link {
+          font-size: 13.5px;
+          color: #1d9bf0;
+          text-decoration: none;
+          margin-top: 1px;
+          word-break: break-all;
+        }
+        .client-link:hover {
+          text-decoration: underline;
+        }
+        .close-btn {
+          position: absolute;
+          top: 7px;
+          right: 12px;
+          background: none;
+          border: none;
+          color: #888;
+          font-size: 1.23rem;
+          cursor: pointer;
+          padding: 0;
+          line-height: 1;
+          transition: color 0.15s;
+        }
+        .close-btn:hover {
+          color: #fff;
+        }
+        @media (max-width: 600px) {
+          .client-card {
+            min-width: unset;
+            max-width: 96vw;
+            left: 38px;
+            bottom: 39px;
+            padding: 10px 6px 10px 6px;
+          }
+          .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+          }
+          .client-name { font-size: 15px; }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 export default function Home() {
+  const [openIdx, setOpenIdx] = useState(null);
+  const closeTimeout = useRef();
+
+  function open(i) {
+    clearTimeout(closeTimeout.current);
+    setOpenIdx(i);
+  }
+
+  function close(i, withDelay = true) {
+    clearTimeout(closeTimeout.current);
+    if (withDelay) {
+      closeTimeout.current = setTimeout(() => {
+        setOpenIdx(null);
+      }, 120);
+    } else {
+      setOpenIdx(null);
+    }
+  }
+
+  React.useEffect(() => {
+    document.body.style.overflowY = "scroll";
+    return () => {
+      document.body.style.overflowY = "";
+    };
+  }, []);
+
   return (
     <div
       style={{
@@ -19,9 +202,54 @@ export default function Home() {
         <div style={{ marginTop: "2.5rem" }}>
           Instead, for you, I am convinced of better things.
         </div>
-        {/* Cursor one line below last sentence */}
         <div style={{ marginTop: "2.5rem" }}>
           <span className="flashing-cursor" />
+        </div>
+        <div className="client-circles-row">
+          {clients.map((c, i) => (
+            <div
+              className={
+                "client-circle" + (openIdx === i ? " client-circle-active" : "")
+              }
+              key={c.id}
+              tabIndex={0}
+              aria-label={`Show profile card for ${c.name}`}
+              onMouseEnter={() => open(i)}
+              onFocus={() => open(i)}
+              onMouseLeave={() => close(i)}
+              onBlur={() => close(i)}
+              onClick={e => {
+                e.preventDefault();
+                open(i);
+              }}
+              onKeyDown={e => {
+                if (e.key === "Enter" || e.key === " ") open(i);
+                if (e.key === "Escape") close(i, false);
+              }}
+              style={{ zIndex: openIdx === i ? 21 : 1, position: "relative" }}
+            >
+              <img
+                src={c.logo}
+                alt={c.name}
+                style={{
+                  width: 40,
+                  height: 40,
+                  objectFit: "contain",
+                  borderRadius: 10,
+                  background: "#222",
+                  border: "none"
+                }}
+              />
+              {openIdx === i && (
+                <ClientCard
+                  client={c}
+                  onClose={() => close(i, false)}
+                  onMouseEnter={() => open(i)}
+                  onMouseLeave={() => close(i)}
+                />
+              )}
+            </div>
+          ))}
         </div>
         <style jsx>{`
           @keyframes blink {
@@ -31,10 +259,10 @@ export default function Home() {
           }
           .terminal-content {
             margin-top: 80px;
-            font-family: 'Fira Mono', 'Menlo', 'Consolas', monospace;
+            font-family: 'Segoe UI', 'Fira Mono', 'Menlo', 'Consolas', monospace;
             color: #e0e0e0;
-            font-size: 1.25rem; /* Default desktop size (20px) */
-            line-height: 2.5rem;
+            font-size: 1.19rem;
+            line-height: 2.2rem;
             max-width: 900px;
             word-break: break-word;
           }
@@ -45,15 +273,52 @@ export default function Home() {
             background: #00f0e0;
             animation: blink 1.6s steps(2, start) infinite;
           }
-          @media (max-width: 600px) {
-            .terminal-content {
-              margin-left: 16px;
-              margin-right: 16px;
-              font-size: 2rem; /* 32px, 2x default browser size */
-            }
-            .flashing-cursor {
-              height: 2rem;
-            }
+          .client-circles-row {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3.2rem;
+            margin-bottom: 2rem;
+            justify-content: flex-start;
+            position: relative;
+          }
+          .client-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #232323;
+            border: 2px solid rgba(100,100,100,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.18s, box-shadow 0.16s, background 0.22s, opacity 0.2s, filter 0.2s;
+            outline: none;
+            position: relative;
+            box-shadow: 0 2px 10px #0002;
+            opacity: 0.38;
+          }
+          .client-circle-active,
+          .client-circle:focus,
+          .client-circle:hover {
+            border-color: #e0e0e0;
+            background: #282828;
+            opacity: 1;
+          }
+          .client-circle img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: contain;
+            display: block;
+            transition: filter 0.22s, opacity 0.16s;
+            background: #222;
+            opacity: 0.65;
+            border: none;
+          }
+          .client-circle-active img,
+          .client-circle:focus img,
+          .client-circle:hover img {
+            opacity: 1;
           }
         `}</style>
       </div>
