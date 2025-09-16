@@ -13,15 +13,26 @@ export default function Home() {
         overflow: "hidden", // Prevent scrolling
       }}
     >
-      {/* Use the Image component or an <img> tag for the SVG */}
       <img
         src="/caveman-computer.svg" // Path to the SVG in the public folder
         alt="Computer Illustration"
         style={{
-          height: "160px", // Set fixed height
+          height: "160px", // Fixed height for the SVG
           width: "auto", // Maintain aspect ratio
+          animation: "page_fadeIn 1s ease-in forwards", // Apply fade-in animation
+          opacity: 0, // Initial opacity for fade-in effect
         }}
       />
+      <style jsx>{`
+        @keyframes page_fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 }
