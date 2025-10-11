@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { Mail } from 'lucide-react';
+import { Mail, Copy } from 'lucide-react';
 
 interface Particle {
   id: number;
@@ -15,6 +15,9 @@ interface Particle {
 
 export default function Page() {
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [showEmail, setShowEmail] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const email = "hello@betterthings.design";
 
   useEffect(() => {
     // Generate glowing firefly particles
@@ -33,9 +36,25 @@ export default function Page() {
     setParticles(generatedParticles);
   }, []);
 
+  const handleButtonClick = () => {
+    setShowEmail((prev) => !prev);
+    setCopied(false);
+  };
+
+  const handleCopyClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1200);
+    } catch (err) {
+      // fallback or error handling
+    }
+  };
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
-      {/* Red Glow Effect */}
+      {/* Conic Gradient Glow Effect */}
       <div 
         className="absolute pointer-events-none glow-effect"
         style={{
@@ -43,7 +62,7 @@ export default function Page() {
           height: '80vh',
           top: '-30%',
           right: '-30%',
-          background: 'radial-gradient(circle, rgba(255, 87, 51, 0.6) 0%, rgba(255, 87, 51, 0.3) 40%, transparent 70%)',
+          background: 'conic-gradient(from 90deg at 35% -1% in lab, rgb(255,255,255) 7.2deg, rgb(255,208,134) 14.4deg, rgba(17,17,17,0) 36deg, rgba(17,17,17,0) 342deg, rgb(255,255,255) 360deg)',
           zIndex: 0,
           filter: 'blur(40px)'
         }}
@@ -85,8 +104,8 @@ export default function Page() {
           style={{
             fontFamily: 'Inter, Arial, Helvetica, sans-serif',
             fontWeight: 800,
-            letterSpacing: '-0.04em',
-            textShadow: '0 4px 30px rgba(255, 255, 255, 0.7)',
+            letterSpacing: 'calc(-0.04em - 2px)',
+            textShadow: '0 2px 8px rgba(255, 255, 255, 0.35)',
             animation: 'textReveal 2s ease-in-out forwards',
             opacity: 0
           }}
@@ -115,18 +134,46 @@ export default function Page() {
           animation: 'buttonFadeIn 1.5s ease-in-out 0.5s forwards',
           opacity: 0
         }}
-        onClick={() => alert('Get in Touch clicked!')}
+        onClick={handleButtonClick}
       >
         <Mail className="w-5 h-5" />
-        <span>Get in Touch</span>
+        {showEmail ? (
+          <>
+            <span>{email}</span>
+            <span
+              title={copied ? "Copied!" : "Copy"}
+              style={{ cursor: "pointer", display: "flex", alignItems: "center", marginLeft: 6, position: "relative" }}
+              onClick={handleCopyClick}
+            >
+              <Copy className={`w-5 h-5 ${copied ? "text-green-400" : ""}`} />
+              {copied && (
+                <span
+                  style={{
+                    marginLeft: 4,
+                    fontSize: '0.95em',
+                    color: "#22c55e",
+                    fontWeight: 500,
+                    transition: "opacity 0.2s",
+                    opacity: copied ? 1 : 0,
+                    position: "relative",
+                  }}
+                >
+                  Copied
+                </span>
+              )}
+            </span>
+          </>
+        ) : (
+          <span>The Future Is Yours</span>
+        )}
       </button>
 
       {/* Button - Mobile (Bottom Center) */}
       <button
-        className="flex md:hidden items-center gap-2 px-5 py-2.5 rounded-full glass-button-mobile transition-all duration-500"
+        className="flex md:hidden items-center gap-2 px-5 py-2.5 rounded-full glass-button-mobile transition-all duration-500 whitespace-nowrap"
         style={{
           position: 'fixed',
-          bottom: '24px',
+          bottom: '44px', // Ensures at least 16px above the footer
           left: '50%',
           transform: 'translateX(-50%)',
           maxWidth: 'calc(100% - 48px)',
@@ -142,11 +189,80 @@ export default function Page() {
           animation: 'buttonFadeIn 1.5s ease-in-out 0.5s forwards',
           opacity: 0
         }}
-        onClick={() => alert('Get in Touch clicked!')}
+        onClick={handleButtonClick}
       >
         <Mail className="w-5 h-5" />
-        <span>Get in Touch</span>
+        {showEmail ? (
+          <>
+            <span className="whitespace-nowrap">{email}</span>
+            <span
+              title={copied ? "Copied!" : "Copy"}
+              style={{ cursor: "pointer", display: "flex", alignItems: "center", marginLeft: 6, position: "relative" }}
+              onClick={handleCopyClick}
+            >
+              <Copy className={`w-5 h-5 ${copied ? "text-green-400" : ""}`} />
+              {copied && (
+                <span
+                  style={{
+                    marginLeft: 4,
+                    fontSize: '0.95em',
+                    color: "#22c55e",
+                    fontWeight: 500,
+                    transition: "opacity 0.2s",
+                    opacity: copied ? 1 : 0,
+                    position: "relative",
+                  }}
+                >
+                  Copied
+                </span>
+              )}
+            </span>
+          </>
+        ) : (
+          <span className="whitespace-nowrap">The Future Is Yours</span>
+        )}
       </button>
+
+      {/* Footer: Founded by Neil McArdle with miniature profile pic */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 8,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          fontSize: '0.82rem',
+          color: '#bbb',
+          gap: '6px',
+        }}
+      >
+        <img
+          src="/neilmcardle-avatar.png"
+          alt="Neil McArdle"
+          style={{
+            width: 20,
+            height: 20,
+            objectFit: 'cover',
+            borderRadius: '50%',
+            border: '1px solid #eee',
+          }}
+        />
+        <a
+          href="https://neilmcardle.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: '#bbb',
+            textDecoration: 'underline',
+            fontWeight: 400,
+            letterSpacing: '-0.5px',
+          }}
+        >
+          Founded by Neil McArdle
+        </a>
+      </div>
     </div>
   );
 }
