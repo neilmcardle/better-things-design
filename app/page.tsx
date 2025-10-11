@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from 'react';
 import { Mail } from 'lucide-react';
 
@@ -11,7 +13,7 @@ interface Particle {
   glowIntensity: number;
 }
 
-export default function App() {
+export default function Page() {
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function App() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
-      {/* Red Glow Effect - Stronger */}
+      {/* Red Glow Effect */}
       <div 
         className="absolute pointer-events-none glow-effect"
         style={{
@@ -81,10 +83,10 @@ export default function App() {
         <h1 
           className="main-text text-white text-center"
           style={{
-            fontFamily: 'Inter, sans-serif',
+            fontFamily: 'Inter, Arial, Helvetica, sans-serif',
             fontWeight: 800,
             letterSpacing: '-0.04em',
-            textShadow: '0 4px 30px rgba(255, 255, 255, 0.4)',
+            textShadow: '0 4px 30px rgba(255, 255, 255, 0.7)',
             animation: 'textReveal 2s ease-in-out forwards',
             opacity: 0
           }}
@@ -107,15 +109,15 @@ export default function App() {
           border: '1px solid rgba(255, 255, 255, 0.15)',
           boxShadow: '0 4px 24px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.2)',
           color: 'white',
-          fontSize: '0.875rem',
-          fontWeight: 500,
+          fontSize: '1.25rem',
+          fontWeight: 600,
           zIndex: 2,
           animation: 'buttonFadeIn 1.5s ease-in-out 0.5s forwards',
           opacity: 0
         }}
         onClick={() => alert('Get in Touch clicked!')}
       >
-        <Mail className="w-4 h-4" />
+        <Mail className="w-5 h-5" />
         <span>Get in Touch</span>
       </button>
 
@@ -134,15 +136,15 @@ export default function App() {
           border: '1px solid rgba(255, 255, 255, 0.15)',
           boxShadow: '0 4px 24px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.2)',
           color: 'white',
-          fontSize: '0.875rem',
-          fontWeight: 500,
+          fontSize: '1.1rem',
+          fontWeight: 600,
           zIndex: 2,
           animation: 'buttonFadeIn 1.5s ease-in-out 0.5s forwards',
           opacity: 0
         }}
         onClick={() => alert('Get in Touch clicked!')}
       >
-        <Mail className="w-4 h-4" />
+        <Mail className="w-5 h-5" />
         <span>Get in Touch</span>
       </button>
     </div>
