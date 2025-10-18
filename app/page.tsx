@@ -40,6 +40,7 @@ export default function Page() {
   const [copied, setCopied] = useState(false);
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [visibleItems, setVisibleItems] = useState(6);
+  const [touchedCardId, setTouchedCardId] = useState<number | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const email = "hello@betterthings.design";
@@ -380,6 +381,8 @@ export default function Page() {
               item={item} 
               index={index}
               onImageLoad={handleImageLoad}
+              touchedCardId={touchedCardId}
+              setTouchedCardId={setTouchedCardId}
             />
           ))}
         </div>
@@ -404,11 +407,23 @@ interface PortfolioCardProps {
   item: PortfolioItem;
   index: number;
   onImageLoad: (id: number) => void;
+  touchedCardId: number | null;
+  setTouchedCardId: (id: number | null) => void;
 }
 
-function PortfolioCard({ item, index, onImageLoad }: PortfolioCardProps) {
+function PortfolioCard({ item, index, onImageLoad, touchedCardId, setTouchedCardId }: PortfolioCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isTouched, setIsTouched] = useState(false);
+  const isTouched = touchedCardId === item.id;
+
+  const handleTouchStart = () => {
+    if (isTouched) {
+      // If this card is already touched, untouched it
+      setTouchedCardId(null);
+    } else {
+      // Touch this card (will automatically untouched any other card)
+      setTouchedCardId(item.id);
+    }
+  };
 
   return (
     <div
@@ -425,7 +440,7 @@ function PortfolioCard({ item, index, onImageLoad }: PortfolioCardProps) {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={() => setIsTouched(!isTouched)}
+      onTouchStart={handleTouchStart}
     >
       {/* Image */}
       <img

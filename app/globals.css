@@ -428,9 +428,16 @@ html {
   }
 }
 
+@media (max-width: 600px) {
+  .gallery-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
 @media (max-width: 480px) {
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 4px !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
   }
 }
