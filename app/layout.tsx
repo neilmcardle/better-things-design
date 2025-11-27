@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import WidowFix from "../components/WidowFix";
 
 export const metadata: Metadata = {
   title: "Better Things Design | Christian Design Studio | Book Covers, Event Flyers & Sermon Graphics",
@@ -39,7 +40,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <WidowFix />
+      </body>
     </html>
   );
 }

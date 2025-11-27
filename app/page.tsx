@@ -36,6 +36,8 @@ const portfolioData: Omit<PortfolioItem, 'loaded'>[] = [
 ];
 
 export default function Page() {
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const [isLight, setIsLight] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [showEmail, setShowEmail] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -116,10 +118,49 @@ export default function Page() {
     ));
   }, []);
 
+  // Observe when hero leaves the viewport to switch the below-hero area to a light theme
+  useEffect(() => {
+    const heroEl = heroRef.current;
+    if (!heroEl) return;
+
+    const io = new IntersectionObserver((entries) => {
+      const e = entries[0];
+      if (!e) return;
+      // when hero is not intersecting the viewport, enable light theme below
+      setIsLight(!e.isIntersecting);
+    }, { threshold: 0.15 });
+
+    io.observe(heroEl);
+    return () => io.disconnect();
+  }, [heroRef]);
+
+  // Entry observer for the explanatory copy section
+  const copyRef = useRef<HTMLDivElement | null>(null);
+  const [copyVisible, setCopyVisible] = useState(false);
+
+  useEffect(() => {
+    const el = copyRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      const e = entries[0];
+      if (!e) return;
+      setCopyVisible(e.isIntersecting);
+    }, { threshold: 0.12 });
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, [copyRef]);
+
   return (
-    <div className="relative w-full min-h-screen bg-black">
+    <div
+      className="relative w-full min-h-screen"
+      style={{
+        background: isLight ? '#ffffff' : '#000',
+        transition: 'background-color 360ms ease',
+      }}
+    >
       {/* Hero Section */}
-      <div className="relative w-full h-screen overflow-hidden bg-black">
+      <div ref={heroRef} className="relative w-full h-screen overflow-hidden bg-black">
         {/* Conic Gradient Glow Effect */}
         <div 
           className="absolute pointer-events-none glow-effect"
@@ -312,17 +353,18 @@ export default function Page() {
         {/* Footer: Founded by Neil McArdle with miniature profile pic */}
         <div
           style={{
-            position: 'fixed',
-            bottom: 8,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 10,
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: '0.82rem',
-            color: '#bbb',
-            gap: '6px',
-          }}
+              position: 'fixed',
+              bottom: 8,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 10,
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: '0.82rem',
+              color: isLight ? '#374151' : '#bbb',
+              gap: '6px',
+              transition: 'color 360ms ease, border-color 360ms ease',
+            }}
         >
           <img
             src="/neilmcardle-avatar.png"
@@ -332,7 +374,10 @@ export default function Page() {
               height: 20,
               objectFit: 'cover',
               borderRadius: '50%',
-              border: '1px solid #eee',
+              borderWidth: 1,
+              borderStyle: 'solid',
+              borderColor: isLight ? '#ddd' : '#eee',
+              transition: 'border-color 360ms ease',
             }}
           />
           <a
@@ -340,10 +385,11 @@ export default function Page() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              color: '#bbb',
+              color: isLight ? '#374151' : '#bbb',
               textDecoration: 'underline',
               fontWeight: 400,
               letterSpacing: '-0.5px',
+              transition: 'color 360ms ease',
             }}
           >
             Founded by Neil McArdle
@@ -353,9 +399,23 @@ export default function Page() {
       </div>
 
       {/* Brands strip: placed below the hero so it appears just below the fold */}
-      <BrandStrip />
+      <BrandStrip light={isLight} />
 
-        {/* Section heading for the gallery */}
+        {/* Section heading for the gallery (moved into the gallery container below) */}
+
+      {/* Portfolio Gallery */}
+      <div 
+        className="portfolio-gallery"
+        style={{
+          position: 'relative',
+          width: '100%',
+          backgroundColor: isLight ? '#ffffff' : '#000',
+          zIndex: 1,
+          padding: '8px 20px 130px',
+          marginTop: '154px',
+          transition: 'background-color 360ms ease',
+        }}
+      >
         <div className="mx-auto max-w-6xl px-6 flex items-center justify-center" style={{ paddingTop: 6 }}>
           <h2
             id="designs-heading"
@@ -366,7 +426,7 @@ export default function Page() {
               fontWeight: 600,
               fontSize: '0.875rem',
               margin: 0,
-              marginBottom: 2,
+              marginBottom: 8,
               textAlign: 'center'
             }}
           >
@@ -374,17 +434,6 @@ export default function Page() {
           </h2>
         </div>
 
-      {/* Portfolio Gallery */}
-      <div 
-        className="portfolio-gallery"
-        style={{
-          position: 'relative',
-          width: '100%',
-          backgroundColor: '#000',
-          zIndex: 1,
-          padding: '8px 20px 260px',
-        }}
-      >
         <div 
           className="gallery-grid"
           style={{
@@ -418,6 +467,72 @@ export default function Page() {
           />
         )}
       </div>
+      {/* Centered explanatory copy (Altalogy-like) */}
+      <section
+        ref={copyRef}
+        aria-labelledby="what-we-do-heading"
+        style={{
+          maxWidth: 820,
+          margin: '24px auto',
+          padding: '0 24px',
+          color: isLight ? '#111827' : '#ffffff',
+          textAlign: 'center',
+          fontFamily: 'Inter, Arial, Helvetica, sans-serif',
+          opacity: copyVisible ? 1 : 0,
+          transform: copyVisible ? 'translateY(0)' : 'translateY(8px)',
+          transition: 'opacity 420ms ease, transform 420ms ease'
+        }}
+      >
+        <div style={{ fontSize: '0.75rem', letterSpacing: '0.14em', color: isLight ? '#6B7280' : 'rgba(255,255,255,0.65)', textTransform: 'uppercase', marginBottom: 10 }}>
+          WHAT BETTER THINGS DOES?
+        </div>
+
+        <h3
+          id="what-we-do-heading"
+          style={{
+            fontSize: '1.15rem',
+            fontWeight: 600,
+            lineHeight: 1.6,
+            margin: '8px 0 14px',
+            color: isLight ? '#111827' : '#fff'
+          }}
+        >
+          At Better Things, we distill your essence into designs the world feels. From logo marks and typologies to print/digital guidelines, web/mobile interfaces, and full-site builds.
+        </h3>
+
+        {/* (Removed per user request) */}
+
+        <div style={{ width: 40, height: 1, background: isLight ? '#E5E7EB' : 'rgba(255,255,255,0.18)', margin: '28px auto' }} />
+
+        <div style={{ fontSize: '0.85rem', letterSpacing: '0.02em', color: isLight ? '#6B7280' : 'rgba(255,255,255,0.7)', textTransform: 'uppercase', marginBottom: 12 }}>
+          CAN I WORK WITH YOU ON WEBSITE OR PRODUCT DESIGN, THEN IMPLEMENT ELSEWHERE?
+        </div>
+
+        <div style={{ fontSize: '1.15rem', lineHeight: 1.6, color: isLight ? '#111827' : '#fff', marginBottom: 18 }}>
+          <p style={{ marginTop: 0, fontWeight: 600, marginBottom: 8 }}>
+            For websites, we deliver fully implemented sites. No handoffs. Visions often fade in external development environments; the live site matters, not only mocks.
+          </p>
+          <p style={{ margin: 0, fontWeight: 600 }}>
+            Though for product UI (startups especially), yes: we design demos of builds to make them feel real.
+          </p>
+        </div>
+
+        <div style={{ width: 40, height: 1, background: isLight ? '#E5E7EB' : 'rgba(255,255,255,0.18)', margin: '20px auto' }} />
+
+        <div style={{ fontSize: '0.85rem', letterSpacing: '0.02em', color: isLight ? '#6B7280' : 'rgba(255,255,255,0.7)', textTransform: 'uppercase', marginBottom: 12 }}>
+          DO YOU OFFER GRAPHIC DESIGN?
+        </div>
+
+        <div style={{ fontSize: '1.15rem', lineHeight: 1.6, color: isLight ? '#111827' : '#fff', marginBottom: 40 }}>
+          <p style={{ marginTop: 0, fontWeight: 600 }}>
+            While we don't offer graphic design as a standalone service, it's typically part of a brand identity package.
+          </p>
+          <p style={{ margin: '8px 0', fontWeight: 600 }}>
+            We know visuals are often your most urgent need, so we're happy to focus on visual design to support your immediate needs and ensure it aligns with the future of your brand.
+          </p>
+        </div>
+      </section>
+
       {/* Spacer to ensure the final gallery row isn't clipped by fixed UI */}
       <div
         aria-hidden="true"
