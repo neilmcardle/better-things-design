@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Mail, Copy } from 'lucide-react';
+import BrandStrip from '../components/ui/brand-strip';
 
 interface Particle {
   id: number;
@@ -252,9 +253,7 @@ export default function Page() {
                 )}
               </span>
             </>
-          ) : (
-            <span>The Future Is Yours</span>
-          )}
+          ) : null}
         </button>
 
         {/* Button - Mobile (Bottom Center) */}
@@ -307,9 +306,7 @@ export default function Page() {
                 )}
               </span>
             </>
-          ) : (
-            <span className="whitespace-nowrap">The Future Is Yours</span>
-          )}
+          ) : null}
         </button>
 
         {/* Footer: Founded by Neil McArdle with miniature profile pic */}
@@ -352,7 +349,30 @@ export default function Page() {
             Founded by Neil McArdle
           </a>
         </div>
+        {/* Brand strip intentionally left out of the hero so it sits below the fold */}
       </div>
+
+      {/* Brands strip: placed below the hero so it appears just below the fold */}
+      <BrandStrip />
+
+        {/* Section heading for the gallery */}
+        <div className="mx-auto max-w-6xl px-6 flex items-center justify-center" style={{ paddingTop: 6 }}>
+          <h2
+            id="designs-heading"
+            style={{
+              color: '#9CA3AF',
+              textTransform: 'uppercase',
+              letterSpacing: '0.12em',
+              fontWeight: 600,
+              fontSize: '0.875rem',
+              margin: 0,
+              marginBottom: 2,
+              textAlign: 'center'
+            }}
+          >
+            DESIGNS WE'VE MADE
+          </h2>
+        </div>
 
       {/* Portfolio Gallery */}
       <div 
@@ -362,7 +382,7 @@ export default function Page() {
           width: '100%',
           backgroundColor: '#000',
           zIndex: 1,
-          padding: '80px 20px 40px',
+          padding: '8px 20px 120px',
         }}
       >
         <div 
@@ -398,6 +418,15 @@ export default function Page() {
           />
         )}
       </div>
+      {/* Spacer to ensure the final gallery row isn't clipped by fixed UI */}
+      <div
+        aria-hidden="true"
+        style={{
+          height: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
+          width: '100%',
+          background: 'transparent'
+        }}
+      />
     </div>
   );
 }
