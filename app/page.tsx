@@ -382,7 +382,7 @@ export default function Page() {
           width: '100%',
           backgroundColor: '#000',
           zIndex: 1,
-          padding: '8px 20px 120px',
+          padding: '8px 20px 260px',
         }}
       >
         <div 
@@ -422,7 +422,7 @@ export default function Page() {
       <div
         aria-hidden="true"
         style={{
-          height: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
+          height: 'calc(env(safe-area-inset-bottom, 0px) + 260px)',
           width: '100%',
           background: 'transparent'
         }}
