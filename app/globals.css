@@ -1,11 +1,11 @@
-/* 1042.studio-inspired layout styles */
-.bt1042-root-layout {
+/* -design.studio-inspired layout styles */
+.bt-design-root-layout {
   display: flex;
   min-height: 100vh;
   background: #fff;
   font-family: 'Aspekta', Inter, Arial, Helvetica, sans-serif;
 }
-.bt1042-sidebar {
+.bt-design-sidebar {
   width: 340px;
   min-width: 260px;
   max-width: 400px;
@@ -19,39 +19,39 @@
   overflow-y: auto;
   z-index: 10;
 }
-.bt1042-sidebar-content {
+.bt-design-sidebar-content {
   padding: 48px 32px 32px 32px;
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
 }
-.bt1042-logo {
+.bt-design-logo {
   font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: -0.04em;
   margin-bottom: 48px;
   line-height: 1.1;
 }
-.bt1042-sidebar-section {
+.bt-design-sidebar-section {
   margin-bottom: 40px;
 }
-.bt1042-sidebar-title {
+.bt-design-sidebar-title {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 12px;
   color: #222;
 }
-.bt1042-sidebar-desc {
+.bt-design-sidebar-desc {
   font-size: 1.05rem;
   color: #444;
   line-height: 1.6;
 }
-.bt1042-sidebar-contact {
+.bt-design-sidebar-contact {
   font-size: 1rem;
   color: #222;
 }
-.bt1042-sidebar-email {
+.bt-design-sidebar-email {
   display: block;
   margin-top: 6px;
   color: #0070f3;
@@ -59,7 +59,7 @@
   font-weight: 500;
   word-break: break-all;
 }
-.bt1042-sidebar-footer {
+.bt-design-sidebar-footer {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -67,14 +67,14 @@
   color: #888;
   margin-top: 32px;
 }
-.bt1042-sidebar-avatar {
+.bt-design-sidebar-avatar {
   width: 28px;
   height: 28px;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid #eee;
 }
-.bt1042-main-content {
+.bt-design-main-content {
   flex: 1 1 0%;
   min-width: 0;
   background: #fff;
@@ -84,7 +84,7 @@
   justify-content: flex-start;
   overflow-x: hidden;
 }
-.bt1042-projects {
+.bt-design-projects {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -93,14 +93,14 @@
   flex-direction: column;
   gap: 64px;
 }
-.bt1042-project-section {
+.bt-design-project-section {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
 }
-.bt1042-project-image-wrap {
+.bt-design-project-image-wrap {
   width: 100%;
   aspect-ratio: 16/9;
   background: #f3f3f3;
@@ -111,14 +111,14 @@
   align-items: center;
   justify-content: center;
 }
-.bt1042-project-image {
+.bt-design-project-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   transition: opacity 0.5s;
 }
-.bt1042-project-image[src$='.svg'] {
+.bt-design-project-image[src$='.svg'] {
   height: 80px;
   width: auto;
   max-width: 100%;
@@ -128,17 +128,17 @@
   display: block;
   opacity: 1 !important;
 }
-.bt1042-project-meta {
+.bt-design-project-meta {
   padding-left: 2px;
 }
-.bt1042-project-title {
+.bt-design-project-title {
   font-size: 1.45rem;
   font-weight: 700;
   color: #181818;
   margin-bottom: 2px;
   letter-spacing: -0.01em;
 }
-.bt1042-project-category {
+.bt-design-project-category {
   font-size: 1.02rem;
   color: #888;
   font-weight: 400;
@@ -146,10 +146,10 @@
   letter-spacing: 0.04em;
 }
 @media (max-width: 900px) {
-  .bt1042-root-layout {
+  .bt-design-root-layout {
     flex-direction: column;
   }
-  .bt1042-sidebar {
+  .bt-design-sidebar {
     width: 100%;
     max-width: 100vw;
     min-width: 0;
@@ -158,35 +158,35 @@
     border-right: none;
     border-bottom: 1px solid #e5e7eb;
   }
-  .bt1042-sidebar-content {
+  .bt-design-sidebar-content {
     padding: 32px 18px 18px 18px;
   }
-  .bt1042-main-content {
+  .bt-design-main-content {
     padding: 0;
   }
-  .bt1042-projects {
+  .bt-design-projects {
     padding: 32px 8px 8px 8px;
     gap: 40px;
   }
 }
 @media (max-width: 600px) {
-  .bt1042-logo {
+  .bt-design-logo {
     font-size: 1.3rem;
     margin-bottom: 24px;
   }
-  .bt1042-sidebar-content {
+  .bt-design-sidebar-content {
     padding: 18px 6px 6px 6px;
   }
-  .bt1042-project-title {
+  .bt-design-project-title {
     font-size: 1.05rem;
   }
-  .bt1042-project-section {
+  .bt-design-project-section {
     gap: 12px;
   }
-  .bt1042-projects {
+  .bt-design-projects {
     gap: 24px;
   }
-  .bt1042-project-image-wrap {
+  .bt-design-project-image-wrap {
     border-radius: 10px;
   }
 }

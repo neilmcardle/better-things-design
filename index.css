@@ -1,3 +1,118 @@
+@media (max-width: 600px) {
+  html body {
+    margin: initial !important;
+    padding: 0 !important;
+  }
+  .bt1042-close {
+    margin-right: 16px !important;
+    margin-left: auto !important;
+    margin-top: 18px !important;
+  }
+  .bt1042-sidebar {
+    border-bottom: none !important;
+    box-shadow: none !important;
+  }
+}
+}
+/* Hamburger and sidepanel styles for mobile */
+.bt1042-sidepanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 80vw;
+  max-width: 340px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -2px 0 16px rgba(0,0,0,0.08);
+  z-index: 1002;
+  padding: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.36s cubic-bezier(.4,0,.2,1), opacity 0.36s cubic-bezier(.4,0,.2,1);
+}
+.bt1042-sidepanel.open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.bt1042-sidepanel-inner {
+  padding: 36px 16px 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+@media (max-width: 600px) {
+  .bt1042-sidepanel-inner {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .bt1042-close {
+    margin-right: 16px;
+    margin-left: 0;
+  }
+}
+.bt1042-close {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1003;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  margin-top: 18px;
+}
+@media (max-width: 600px) {
+  .bt1042-sidepanel-inner {
+    padding: 28px 12px 20px 12px;
+    gap: 20px;
+  }
+}
+}
+.bt1042-sidepanel-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.18);
+  z-index: 1001;
+}
+.bt1042-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #888;
+  cursor: pointer;
+  z-index: 1003;
+}
+@media (max-width: 600px) {
+  .bt1042-sidebar-section,
+  .bt1042-sidebar-contact,
+  .bt1042-sidebar-footer {
+    display: none;
+  }
+  .bt1042-hamburger {
+    display: flex;
+  }
+  .bt1042-project-image {
+    max-height: 100px !important;
+  }
+  .bt1042-sidebar {
+    border-bottom: none !important;
+    box-shadow: none !important;
+  }
+}
 @import "./styles/globals.css";
 @custom-variant dark (&:is(.dark *));
 

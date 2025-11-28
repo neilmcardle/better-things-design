@@ -1,7 +1,18 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { Mail, Copy } from 'lucide-react';
+// Mobile detection utility
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 600);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+}
+import { Mail } from 'lucide-react';
 import BrandStrip from '../components/ui/brand-strip';
 
 interface Particle {
@@ -32,7 +43,7 @@ const coverlyProject = {
 const nukSooProject = {
   id: 12,
   title: "Nuk Soo",
-  category: "The Dan Roberts Group",
+  category: "Mixed Martial Arts Fitness",
   image: "/nuk-soo.svg"
 };
 const gatewickProject = {
@@ -81,19 +92,25 @@ export default function Page() {
       ...bannerOfTruthProjects.map(item => ({ ...item, loaded: false }))
     ]);
             {/* Gatewick House & Gardens project */}
-            <section className="bt1042-project-section">
-              <div className="bt1042-project-image-wrap">
-                <img
-                  src={gatewickProject.image}
-                  alt={gatewickProject.title}
-                  className="bt1042-project-image"
+            <section className="bt-design-project-section">
+              <div className="bt-design-project-image-wrap">
+                <div
+                  className="bt1042-sidepanel-backdrop"
                   style={{
-                    opacity: portfolioItems[2]?.loaded ? 1 : 0,
-                    transition: 'opacity 0.5s',
-                    height: '240px',
-                    width: 'auto',
-                    maxWidth: '100%',
-                    objectFit: 'contain',
+                    opacity: menuOpen ? 1 : 0,
+                    pointerEvents: menuOpen ? 'auto' : 'none',
+                    transition: 'opacity 0.36s cubic-bezier(.4,0,.2,1)',
+                    display: menuOpen ? 'block' : 'block',
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    zIndex: 1001,
+                  }}
+                  onClick={() => setMenuOpen(false)}
+                  aria-hidden={!menuOpen}
+                />
                     background: 'none',
                     margin: '0 auto',
                     display: 'block',
@@ -102,8 +119,8 @@ export default function Page() {
                   loading="lazy"
                 />
               </div>
-              <div className="bt1042-project-meta">
-                <div className="bt1042-project-title">
+              <div className="bt-design-project-meta">
+                <div className="bt-design-project-title">
                   {gatewickProject.title}
                   <a
                     href="https://www.instagram.com/gatewick_gardens/"
@@ -132,7 +149,7 @@ export default function Page() {
                     </svg>
                   </a>
                 </div>
-                <div className="bt1042-project-category">{gatewickProject.category}</div>
+                <div className="bt-design-project-category">{gatewickProject.category}</div>
               </div>
             </section>
   }, []);
@@ -183,46 +200,217 @@ export default function Page() {
     return () => io.disconnect();
   }, [copyRef]);
 
+  const isMobile = useIsMobile();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [emailRevealed, setEmailRevealed] = useState(false);
   return (
-    <div className="bt1042-root-layout">
+    <div className="bt-design-root-layout">
       {/* Sidebar (left) */}
-      <aside className="bt1042-sidebar">
-        <div className="bt1042-sidebar-content">
-          <div className="bt1042-logo">BETTER<br/>THINGS</div>
-          <div className="bt1042-sidebar-section">
-            <div className="bt1042-sidebar-title">We design for tomorrow</div>
-            <div className="bt1042-sidebar-desc">
-              Better Things is a creative design studio transforming ideas into unforgettable brand experiences.<br/><br/>
-              We partner with start-ups to create identities and products that resonate and endure.
-            </div>
-          </div>
-          <div className="bt1042-sidebar-section bt1042-sidebar-contact">
-            <div>Contact</div>
-            <a href="mailto:hello@betterthings.design" className="bt1042-sidebar-email">hello@betterthings.design</a>
-          </div>
-          <div className="bt1042-sidebar-footer">
-            <img src="/neilmcardle-avatar.png" alt="Neil McArdle" className="bt1042-sidebar-avatar" />
-            <a href="https://neilmcardle.com" target="_blank" rel="noopener noreferrer">Founded by Neil McArdle</a>
-          </div>
+      <aside className="bt-design-sidebar">
+        <div className="bt-design-sidebar-content">
+          <div className="bt-design-logo">BETTER<br/>THINGS</div>
+          {isMobile ? (
+            <button
+              className="bt-design-hamburger"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <img
+                src={menuOpen ? "/close-sidebar-icon.svg" : "/hamburger-menu-icon.svg"}
+                alt={menuOpen ? "Close menu" : "Open menu"}
+                style={{ width: 32, height: 32, display: 'block' }}
+              />
+            </button>
+          ) : (
+            <>
+              <div className="bt-design-sidebar-section">
+                <div className="bt-design-sidebar-title">We design for tomorrow</div>
+                <div className="bt-design-sidebar-desc">
+                  Better Things is a creative design studio transforming ideas into unforgettable brand experiences.<br/><br/>
+                  We partner with start-ups to create identities and products that resonate and endure.
+                </div>
+              </div>
+              <div className="bt-design-sidebar-section bt-design-sidebar-contact" style={{ marginLeft: 2, marginRight: 2 }}>
+                <div>Contact</div>
+                <a href="mailto:hello@betterthings.design" className="bt-design-sidebar-email">hello@betterthings.design</a>
+              </div>
+              <div className="bt-design-sidebar-footer" style={{ marginLeft: 2, marginRight: 2 }}>
+                <img src="/neilmcardle-avatar.png" alt="Neil McArdle" className="bt-design-sidebar-avatar" />
+                <a href="https://neilmcardle.com" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  Founded by Neil McArdle
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16" height="16" viewBox="0 0 20 20" fill="none"
+                    style={{ marginLeft: 4, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                  >
+                    <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                  </svg>
+                </a>
+              </div>
+            </>
+          )}
         </div>
       </aside>
+      {/* Sidepanel for mobile */}
+      {isMobile && (
+        <>
+          <div
+            className="bt-design-sidepanel-backdrop"
+            style={{
+              opacity: menuOpen ? 1 : 0,
+              pointerEvents: menuOpen ? 'auto' : 'none',
+              transition: 'opacity 0.36s cubic-bezier(.4,0,.2,1)',
+              display: menuOpen ? 'block' : 'block',
+            }}
+            onClick={() => setMenuOpen(false)}
+            onTouchStart={() => setMenuOpen(false)}
+            aria-hidden={!menuOpen}
+          />
+          <div
+            className={`bt-design-sidepanel${menuOpen ? ' open' : ''}`}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              height: '100vh',
+              zIndex: 1002,
+              transform: menuOpen ? 'translateX(0)' : 'translateX(-100%)',
+              transition: 'transform 0.36s cubic-bezier(.4,0,.2,1)',
+              pointerEvents: menuOpen ? 'auto' : 'none',
+              background: '#fff',
+              width: '80vw',
+              maxWidth: 340,
+              boxShadow: '2px 0 16px rgba(0,0,0,0.08)',
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            aria-hidden={!menuOpen}
+            tabIndex={menuOpen ? 0 : -1}
+          >
+            <button
+              aria-label="Close sidepanel"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                position: 'absolute',
+                top: 20,
+                left: 20,
+                background: 'none',
+                border: 'none',
+                fontSize: 28,
+                cursor: 'pointer',
+                zIndex: 1003,
+                width: 40,
+                height: 40,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 0,
+              }}
+            >
+              <span style={{fontSize: 48, lineHeight: 1, marginLeft: -28}}>&times;</span>
+            </button>
+            <div className="bt-design-sidepanel-inner" style={{paddingTop: 80}}>
+              <div className="bt-design-sidebar-section" style={{ marginLeft: 16, marginRight: 16 }}>
+                <div style={{
+                  fontSize: '0.78rem',
+                  color: '#888',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  marginBottom: 12,
+                }}>
+                  We design for a better future
+                </div>
+                <div className="bt-design-sidebar-desc">
+                  Better Things is a premier creative design studio that transforms innovative concepts into distinctive brand identities.<br /><br />
+                  We collaborate with startups to develop resonant visual identities across print and digital platforms, tailored to engage their target audiences.
+                </div>
+              </div>
+              <div className="bt-design-sidebar-section" style={{ marginLeft: 16, marginRight: 16 }}>
+                <div style={{
+                  fontSize: '0.78rem',
+                  color: '#888',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  marginBottom: 4,
+                }}>
+                  Contact
+                </div>
+                {!emailRevealed ? (
+                  <button
+                    onClick={() => setEmailRevealed(true)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      background: 'none',
+                      border: '1px solid #eee',
+                      borderRadius: 6,
+                      padding: '6px 12px',
+                      color: '#222',
+                      fontSize: '1rem',
+                      cursor: 'pointer',
+                      marginTop: 4,
+                    }}
+                  >
+                    <Mail size={18} style={{ color: '#888' }} />
+                    <span>Work with us</span>
+                  </button>
+                ) : (
+                  <a href={`mailto:${email}`} className="bt-design-sidebar-email" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <Mail size={18} style={{ color: '#888' }} />
+                    {email}
+                  </a>
+                )}
+              </div>
+              <div className="bt-design-sidebar-footer" style={{ marginLeft: 16, marginRight: 16, marginTop: 18 }}>
+                <img src="/neilmcardle-avatar.png" alt="Neil McArdle" className="bt-design-sidebar-avatar" />
+                <a href="https://neilmcardle.com" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  Founded by Neil McArdle
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16" height="16" viewBox="0 0 20 20" fill="none"
+                    style={{ marginLeft: 4, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                  >
+                    <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
       {/* Main content (right) */}
-      <main className="bt1042-main-content">
-        <div className="bt1042-projects">
+      <main className="bt-design-main-content">
+        <div className="bt-design-projects">
           {/* Coverly project */}
-          <section className="bt1042-project-section">
-            <div className="bt1042-project-image-wrap">
+          <section className="bt-design-project-section">
+            <div className="bt-design-project-image-wrap">
               <img
                 src={coverlyProject.image}
                 alt={coverlyProject.title}
-                className="bt1042-project-image"
-                style={{ opacity: portfolioItems[0]?.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
+                className="bt-design-project-image"
+                style={{
+                  opacity: portfolioItems[0]?.loaded ? 1 : 0,
+                  transition: 'opacity 0.5s',
+                  height: isMobile ? '40px' : '80px',
+                  width: 'auto',
+                  maxWidth: '100%',
+                  objectFit: 'contain',
+                  background: 'none',
+                  margin: '0 auto',
+                  display: 'block',
+                }}
                 onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === coverlyProject.id ? { ...p, loaded: true } : p))}
                 loading="lazy"
               />
             </div>
-            <div className="bt1042-project-meta">
-              <div className="bt1042-project-title">
+            <div className="bt-design-project-meta">
+              <div className="bt-design-project-title">
                 {coverlyProject.title}
                 <a
                   href="https://coverly.figma.site/"
@@ -251,20 +439,23 @@ export default function Page() {
                   </svg>
                 </a>
               </div>
-              <div className="bt1042-project-category">{coverlyProject.category}</div>
+              <div className="bt-design-project-category">{coverlyProject.category}</div>
+              <div style={{ fontSize: '0.98rem', color: '#555', fontWeight: 500, marginTop: 2, marginBottom: 2 }}>
+                Visual Identity & Website Build
+              </div>
             </div>
           </section>
           {/* Nuk Soo project */}
-          <section className="bt1042-project-section">
-            <div className="bt1042-project-image-wrap">
+          <section className="bt-design-project-section">
+            <div className="bt-design-project-image-wrap">
               <img
                 src={nukSooProject.image}
                 alt={nukSooProject.title}
-                className="bt1042-project-image"
+                className="bt-design-project-image"
                 style={{
                   opacity: portfolioItems[1]?.loaded ? 1 : 0,
                   transition: 'opacity 0.5s',
-                  height: '240px',
+                  height: isMobile ? '100px' : '240px',
                   width: 'auto',
                   maxWidth: '100%',
                   objectFit: 'contain',
@@ -276,8 +467,8 @@ export default function Page() {
                 loading="lazy"
               />
             </div>
-            <div className="bt1042-project-meta">
-              <div className="bt1042-project-title">
+            <div className="bt-design-project-meta">
+              <div className="bt-design-project-title">
                 {nukSooProject.title}
                 <a
                   href="https://danrobertsgroup.com/nuksoo/"
@@ -306,20 +497,23 @@ export default function Page() {
                   </svg>
                 </a>
               </div>
-              <div className="bt1042-project-category">{nukSooProject.category}</div>
+              <div className="bt-design-project-category">{nukSooProject.category}</div>
+              <div style={{ fontSize: '0.98rem', color: '#555', fontWeight: 500, marginTop: 2, marginBottom: 2 }}>
+                Visual Identity
+              </div>
             </div>
           </section>
           {/* Gatewick House & Gardens project */}
-          <section className="bt1042-project-section">
-            <div className="bt1042-project-image-wrap">
+          <section className="bt-design-project-section">
+            <div className="bt-design-project-image-wrap">
               <img
                 src={gatewickProject.image}
                 alt={gatewickProject.title}
-                className="bt1042-project-image"
+                className="bt-design-project-image"
                 style={{
                   opacity: portfolioItems[2]?.loaded ? 1 : 0,
                   transition: 'opacity 0.5s',
-                  height: '240px',
+                  height: isMobile ? '100px' : '240px',
                   width: 'auto',
                   maxWidth: '100%',
                   objectFit: 'contain',
@@ -331,8 +525,8 @@ export default function Page() {
                 loading="lazy"
               />
             </div>
-            <div className="bt1042-project-meta">
-              <div className="bt1042-project-title">
+            <div className="bt-design-project-meta">
+              <div className="bt-design-project-title">
                 {gatewickProject.title}
                 <a
                   href="https://www.instagram.com/gatewick_gardens/"
@@ -361,23 +555,36 @@ export default function Page() {
                   </svg>
                 </a>
               </div>
-              <div className="bt1042-project-category">{gatewickProject.category}</div>
+              <div className="bt-design-project-category">{gatewickProject.category}</div>
+              <div style={{ fontSize: '0.98rem', color: '#555', fontWeight: 500, marginTop: 2, marginBottom: 2 }}>
+                Visual Identity & On-Site Signage
+              </div>
             </div>
           </section>
           {/* MakeEbook project */}
-          <section className="bt1042-project-section">
-            <div className="bt1042-project-image-wrap">
+          <section className="bt-design-project-section">
+            <div className="bt-design-project-image-wrap">
               <img
                 src={makeEbookProject.image}
                 alt={makeEbookProject.title}
-                className="bt1042-project-image"
-                style={{ opacity: portfolioItems[1]?.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
+                className="bt-design-project-image"
+                style={{
+                  opacity: portfolioItems[1]?.loaded ? 1 : 0,
+                  transition: 'opacity 0.5s',
+                  height: isMobile ? '40px' : '80px',
+                  width: 'auto',
+                  maxWidth: '100%',
+                  objectFit: 'contain',
+                  background: 'none',
+                  margin: '0 auto',
+                  display: 'block',
+                }}
                 onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === makeEbookProject.id ? { ...p, loaded: true } : p))}
                 loading="lazy"
               />
             </div>
-            <div className="bt1042-project-meta">
-              <div className="bt1042-project-title">
+            <div className="bt-design-project-meta">
+              <div className="bt-design-project-title">
                 {makeEbookProject.title}
                 <a
                   href="https://neilmcardle.com/make-ebook"
@@ -406,13 +613,16 @@ export default function Page() {
                   </svg>
                 </a>
               </div>
-              <div className="bt1042-project-category">{makeEbookProject.category}</div>
+              <div className="bt-design-project-category">{makeEbookProject.category}</div>
+              <div style={{ fontSize: '0.98rem', color: '#555', fontWeight: 500, marginTop: 2, marginBottom: 2 }}>
+                Visual Identity & Website Build
+              </div>
             </div>
           </section>
           {/* Grace Church Greenwich group */}
           {/* Grace Church Greenwich group */}
-          <section className="bt1042-project-section">
-            <div className="bt1042-project-title" style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <section className="bt-design-project-section">
+            <div className="bt-design-project-title" style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
               Grace Church Greenwich
               <a
                 href="https://greenwich.church"
@@ -442,7 +652,7 @@ export default function Page() {
               </a>
             </div>
             <div
-              className="bt1042-project-category"
+              className="bt-design-project-category"
               style={{
                 marginBottom: 12,
                 color: '#888',
@@ -455,28 +665,28 @@ export default function Page() {
             >
               EVENT FLYERS, BOOK COVERS, AND SERMON GRAPHICS
             </div>
-            <div className="bt1042-gracechurch-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+            <div className="bt-design-gracechurch-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
               {graceChurchProjects.map((item, idx) => (
                 <div key={item.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
-                  <div className="bt1042-project-image-wrap" style={{ aspectRatio: '1/1', minHeight: 0 }}>
+                  <div className="bt-design-project-image-wrap" style={{ aspectRatio: '1/1', minHeight: 0 }}>
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="bt1042-project-image"
+                      className="bt-design-project-image"
                       style={{ opacity: portfolioItems[idx+2]?.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
                       onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === item.id ? { ...p, loaded: true } : p))}
                       loading="lazy"
                     />
                   </div>
-                  <div className="bt1042-project-title" style={{ fontSize: '1.08rem', fontWeight: 600 }}>{item.title}</div>
-                  <div className="bt1042-project-category" style={{ fontSize: '0.98rem' }}>{item.category}</div>
+                  <div className="bt-design-project-title" style={{ fontSize: '1.08rem', fontWeight: 600 }}>{item.title}</div>
+                  <div className="bt-design-project-category" style={{ fontSize: '0.98rem' }}>{item.category}</div>
                 </div>
               ))}
             </div>
           </section>
           {/* Banner of Truth group */}
-          <section className="bt1042-project-section">
-            <div className="bt1042-project-title" style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <section className="bt-design-project-section">
+            <div className="bt-design-project-title" style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
               Banner of Truth
               <a
                 href="https://banneroftruth.org/uk/"
@@ -506,7 +716,7 @@ export default function Page() {
               </a>
             </div>
             <div
-              className="bt1042-project-category"
+              className="bt-design-project-category"
               style={{
                 marginBottom: 12,
                 color: '#888',
@@ -519,21 +729,21 @@ export default function Page() {
             >
               BOOK COVER DESIGN
             </div>
-            <div className="bt1042-gracechurch-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+            <div className="bt-design-gracechurch-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
               {bannerOfTruthProjects.map((item, idx) => (
                 <div key={item.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
-                  <div className="bt1042-project-image-wrap" style={{ aspectRatio: '1/1', minHeight: 0 }}>
+                  <div className="bt-design-project-image-wrap" style={{ aspectRatio: '1/1', minHeight: 0 }}>
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="bt1042-project-image"
+                      className="bt-design-project-image"
                       style={{ opacity: portfolioItems[idx+graceChurchProjects.length+2]?.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
                       onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === item.id ? { ...p, loaded: true } : p))}
                       loading="lazy"
                     />
                   </div>
-                  <div className="bt1042-project-title" style={{ fontSize: '1.08rem', fontWeight: 600 }}>{item.title}</div>
-                  <div className="bt1042-project-category" style={{ fontSize: '0.98rem' }}>{item.category}</div>
+                  <div className="bt-design-project-title" style={{ fontSize: '1.08rem', fontWeight: 600 }}>{item.title}</div>
+                  <div className="bt-design-project-category" style={{ fontSize: '0.98rem' }}>{item.category}</div>
                 </div>
               ))}
             </div>
