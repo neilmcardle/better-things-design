@@ -91,67 +91,7 @@ export default function Page() {
       ...graceChurchProjects.map(item => ({ ...item, loaded: false })),
       ...bannerOfTruthProjects.map(item => ({ ...item, loaded: false }))
     ]);
-            {/* Gatewick House & Gardens project */}
-            <section className="bt-design-project-section">
-              <div className="bt-design-project-image-wrap">
-                <div
-                  className="bt1042-sidepanel-backdrop"
-                  style={{
-                    opacity: menuOpen ? 1 : 0,
-                    pointerEvents: menuOpen ? 'auto' : 'none',
-                    transition: 'opacity 0.36s cubic-bezier(.4,0,.2,1)',
-                    display: menuOpen ? 'block' : 'block',
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100vw',
-                    height: '100vh',
-                    zIndex: 1001,
-                  }}
-                  onClick={() => setMenuOpen(false)}
-                  aria-hidden={!menuOpen}
-                />
-                    background: 'none',
-                    margin: '0 auto',
-                    display: 'block',
-                  }}
-                  onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === gatewickProject.id ? { ...p, loaded: true } : p))}
-                  loading="lazy"
-                />
-              </div>
-              <div className="bt-design-project-meta">
-                <div className="bt-design-project-title">
-                  {gatewickProject.title}
-                  <a
-                    href="https://www.instagram.com/gatewick_gardens/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      marginLeft: 4,
-                      fontSize: '1.05rem',
-                      color: '#888',
-                      textDecoration: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      opacity: 0.8,
-                      transition: 'color 0.2s',
-                      verticalAlign: 'middle',
-                    }}
-                    aria-label="Open Gatewick House & Gardens in new tab"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18" height="18" viewBox="0 0 20 20" fill="none"
-                      style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                    >
-                      <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
-                    </svg>
-                  </a>
-                </div>
-                <div className="bt-design-project-category">{gatewickProject.category}</div>
-              </div>
-            </section>
+            {/* Cleaned up stray/invalid code after removing duplicate meta sections */}
   }, []);
 
   // Lazy loading for infinite scroll
@@ -385,33 +325,78 @@ export default function Page() {
         </>
       )}
       {/* Main content (right) */}
-      <main className="bt-design-main-content">
+      <main className="Nuk Soo
+Mixed Martial Arts Fitness
+Visual Identitybt-design-main-content">
         <div className="bt-design-projects">
           {/* Coverly project */}
-          <section className="bt-design-project-section">
-            <div className="bt-design-project-image-wrap">
-              <img
-                src={coverlyProject.image}
-                alt={coverlyProject.title}
-                className="bt-design-project-image"
-                style={{
-                  opacity: portfolioItems[0]?.loaded ? 1 : 0,
-                  transition: 'opacity 0.5s',
-                  height: isMobile ? '40px' : '80px',
-                  width: 'auto',
-                  maxWidth: '100%',
-                  objectFit: 'contain',
-                  background: 'none',
-                  margin: '0 auto',
-                  display: 'block',
-                }}
-                onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === coverlyProject.id ? { ...p, loaded: true } : p))}
-                loading="lazy"
-              />
+          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '32px 0 24px 0', marginBottom: 32, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.03)' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
+              <div className="bt-design-project-image-wrap" style={{ position: 'relative', marginTop: 0, background: '#f4f4f4', borderRadius: 20, minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{
+                  position: 'absolute',
+                  top: 20,
+                  left: 20,
+                  zIndex: 2,
+                  background: '#e3f0fb', // baby blue
+                  color: '#2563a6', // slightly darker blue
+                  fontWeight: 500,
+                  fontSize: '0.98rem',
+                  borderRadius: 999,
+                  padding: '6px 18px',
+                  letterSpacing: 0.01,
+                  boxShadow: '0 1px 4px 0 rgba(0,0,0,0.03)',
+                  display: 'inline-block',
+                }}>
+                  Visual Identity & Website Build
+                </span>
+                {coverlyProject.image.endsWith('.svg') ? (
+                  <img
+                    src={coverlyProject.image}
+                    alt={coverlyProject.title}
+                    className="bt-design-project-image"
+                    style={{
+                      opacity: portfolioItems[0]?.loaded ? 1 : 0,
+                      transition: 'opacity 0.5s',
+                      height: isMobile ? '40px' : '80px',
+                      width: 'auto',
+                      maxWidth: '100%',
+                      objectFit: 'contain',
+                      background: 'none',
+                      margin: '0 auto',
+                      display: 'block',
+                    }}
+                    onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === coverlyProject.id ? { ...p, loaded: true } : p))}
+                    loading="lazy"
+                  />
+                ) : (
+                  <picture>
+                    <source srcSet={coverlyProject.image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+                    <img
+                      src={coverlyProject.image}
+                      alt={coverlyProject.title}
+                      className="bt-design-project-image"
+                      style={{
+                        opacity: portfolioItems[0]?.loaded ? 1 : 0,
+                        transition: 'opacity 0.5s',
+                        height: isMobile ? '40px' : '80px',
+                        width: 'auto',
+                        maxWidth: '100%',
+                        objectFit: 'contain',
+                        background: 'none',
+                        margin: '0 auto',
+                        display: 'block',
+                      }}
+                      onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === coverlyProject.id ? { ...p, loaded: true } : p))}
+                      loading="lazy"
+                    />
+                  </picture>
+                )}
+              </div>
             </div>
-            <div className="bt-design-project-meta">
-              <div className="bt-design-project-title">
-                {coverlyProject.title}
+            <div style={{ padding: '32px 24px 0 24px' }}>
+              <div style={{ fontWeight: 700, fontSize: '1.25rem', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                Coverly
                 <a
                   href="https://coverly.figma.site/"
                   target="_blank"
@@ -439,37 +424,79 @@ export default function Page() {
                   </svg>
                 </a>
               </div>
-              <div className="bt-design-project-category">{coverlyProject.category}</div>
-              <div style={{ fontSize: '0.98rem', color: '#555', fontWeight: 500, marginTop: 2, marginBottom: 2 }}>
-                Visual Identity & Website Build
-              </div>
+              <div style={{ color: '#888', fontWeight: 400, fontSize: '1rem', marginBottom: 2, letterSpacing: 0.01 }}>BOOK COVER GENERATOR PLATFORM</div>
+              {/* No duplicate label here */}
             </div>
+            {/* Removed duplicate Coverly card meta section */}
           </section>
           {/* Nuk Soo project */}
-          <section className="bt-design-project-section">
-            <div className="bt-design-project-image-wrap">
-              <img
-                src={nukSooProject.image}
-                alt={nukSooProject.title}
-                className="bt-design-project-image"
-                style={{
-                  opacity: portfolioItems[1]?.loaded ? 1 : 0,
-                  transition: 'opacity 0.5s',
-                  height: isMobile ? '100px' : '240px',
-                  width: 'auto',
-                  maxWidth: '100%',
-                  objectFit: 'contain',
-                  background: 'none',
-                  margin: '0 auto',
-                  display: 'block',
-                }}
-                onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === nukSooProject.id ? { ...p, loaded: true } : p))}
-                loading="lazy"
-              />
+          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '32px 0 24px 0', marginBottom: 32, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.03)' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
+              <div className="bt-design-project-image-wrap" style={{ position: 'relative', marginTop: 0, background: '#f4f4f4', borderRadius: 20, minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{
+                  position: 'absolute',
+                  top: 20,
+                  left: 20,
+                  zIndex: 2,
+                  background: '#e3f0fb',
+                  color: '#2563a6',
+                  fontWeight: 500,
+                  fontSize: '0.98rem',
+                  borderRadius: 999,
+                  padding: '6px 18px',
+                  letterSpacing: 0.01,
+                  boxShadow: '0 1px 4px 0 rgba(0,0,0,0.03)',
+                  display: 'inline-block',
+                }}>
+                  Visual Identity
+                </span>
+                {nukSooProject.image.endsWith('.svg') ? (
+                  <img
+                    src={nukSooProject.image}
+                    alt={nukSooProject.title}
+                    className="bt-design-project-image"
+                    style={{
+                      opacity: portfolioItems[1]?.loaded ? 1 : 0,
+                      transition: 'opacity 0.5s',
+                      height: isMobile ? '100px' : '240px',
+                      width: 'auto',
+                      maxWidth: '100%',
+                      objectFit: 'contain',
+                      background: 'none',
+                      margin: '0 auto',
+                      display: 'block',
+                    }}
+                    onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === nukSooProject.id ? { ...p, loaded: true } : p))}
+                    loading="lazy"
+                  />
+                ) : (
+                  <picture>
+                    <source srcSet={nukSooProject.image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+                    <img
+                      src={nukSooProject.image}
+                      alt={nukSooProject.title}
+                      className="bt-design-project-image"
+                      style={{
+                        opacity: portfolioItems[1]?.loaded ? 1 : 0,
+                        transition: 'opacity 0.5s',
+                        height: isMobile ? '100px' : '240px',
+                        width: 'auto',
+                        maxWidth: '100%',
+                        objectFit: 'contain',
+                        background: 'none',
+                        margin: '0 auto',
+                        display: 'block',
+                      }}
+                      onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === nukSooProject.id ? { ...p, loaded: true } : p))}
+                      loading="lazy"
+                    />
+                  </picture>
+                )}
+              </div>
             </div>
-            <div className="bt-design-project-meta">
-              <div className="bt-design-project-title">
-                {nukSooProject.title}
+            <div style={{ padding: '32px 24px 0 24px' }}>
+              <div style={{ fontWeight: 700, fontSize: '1.25rem', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                Nuk Soo
                 <a
                   href="https://danrobertsgroup.com/nuksoo/"
                   target="_blank"
@@ -497,37 +524,78 @@ export default function Page() {
                   </svg>
                 </a>
               </div>
-              <div className="bt-design-project-category">{nukSooProject.category}</div>
-              <div style={{ fontSize: '0.98rem', color: '#555', fontWeight: 500, marginTop: 2, marginBottom: 2 }}>
-                Visual Identity
-              </div>
+              <div style={{ color: '#888', fontWeight: 400, fontSize: '1rem', marginBottom: 2, letterSpacing: 0.01 }}>MARTIAL ARTS FITNESS</div>
             </div>
+            {/* Removed duplicate Nuk Soo card meta section */}
           </section>
           {/* Gatewick House & Gardens project */}
-          <section className="bt-design-project-section">
-            <div className="bt-design-project-image-wrap">
-              <img
-                src={gatewickProject.image}
-                alt={gatewickProject.title}
-                className="bt-design-project-image"
-                style={{
-                  opacity: portfolioItems[2]?.loaded ? 1 : 0,
-                  transition: 'opacity 0.5s',
-                  height: isMobile ? '100px' : '240px',
-                  width: 'auto',
-                  maxWidth: '100%',
-                  objectFit: 'contain',
-                  background: 'none',
-                  margin: '0 auto',
-                  display: 'block',
-                }}
-                onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === gatewickProject.id ? { ...p, loaded: true } : p))}
-                loading="lazy"
-              />
+          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '32px 0 24px 0', marginBottom: 32, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.03)' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
+              <div className="bt-design-project-image-wrap" style={{ position: 'relative', marginTop: 0, background: '#f4f4f4', borderRadius: 20, minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{
+                  position: 'absolute',
+                  top: 20,
+                  left: 20,
+                  zIndex: 2,
+                  background: '#e3f0fb',
+                  color: '#2563a6',
+                  fontWeight: 500,
+                  fontSize: '0.98rem',
+                  borderRadius: 999,
+                  padding: '6px 18px',
+                  letterSpacing: 0.01,
+                  boxShadow: '0 1px 4px 0 rgba(0,0,0,0.03)',
+                  display: 'inline-block',
+                }}>
+                  Visual Identity & On-Site Signage
+                </span>
+                {gatewickProject.image.endsWith('.svg') ? (
+                  <img
+                    src={gatewickProject.image}
+                    alt={gatewickProject.title}
+                    className="bt-design-project-image"
+                    style={{
+                      opacity: portfolioItems[2]?.loaded ? 1 : 0,
+                      transition: 'opacity 0.5s',
+                      height: isMobile ? '100px' : '240px',
+                      width: 'auto',
+                      maxWidth: '100%',
+                      objectFit: 'contain',
+                      background: 'none',
+                      margin: '0 auto',
+                      display: 'block',
+                    }}
+                    onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === gatewickProject.id ? { ...p, loaded: true } : p))}
+                    loading="lazy"
+                  />
+                ) : (
+                  <picture>
+                    <source srcSet={gatewickProject.image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+                    <img
+                      src={gatewickProject.image}
+                      alt={gatewickProject.title}
+                      className="bt-design-project-image"
+                      style={{
+                        opacity: portfolioItems[2]?.loaded ? 1 : 0,
+                        transition: 'opacity 0.5s',
+                        height: isMobile ? '100px' : '240px',
+                        width: 'auto',
+                        maxWidth: '100%',
+                        objectFit: 'contain',
+                        background: 'none',
+                        margin: '0 auto',
+                        display: 'block',
+                      }}
+                      onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === gatewickProject.id ? { ...p, loaded: true } : p))}
+                      loading="lazy"
+                    />
+                  </picture>
+                )}
+              </div>
             </div>
-            <div className="bt-design-project-meta">
-              <div className="bt-design-project-title">
-                {gatewickProject.title}
+            <div style={{ padding: '32px 24px 0 24px' }}>
+              <div style={{ fontWeight: 700, fontSize: '1.25rem', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                Gatewick House & Gardens
                 <a
                   href="https://www.instagram.com/gatewick_gardens/"
                   target="_blank"
@@ -555,37 +623,78 @@ export default function Page() {
                   </svg>
                 </a>
               </div>
-              <div className="bt-design-project-category">{gatewickProject.category}</div>
-              <div style={{ fontSize: '0.98rem', color: '#555', fontWeight: 500, marginTop: 2, marginBottom: 2 }}>
-                Visual Identity & On-Site Signage
-              </div>
+              <div style={{ color: '#888', fontWeight: 400, fontSize: '1rem', marginBottom: 2, letterSpacing: 0.01 }}>COUNTRY HOUSE & GARDENS</div>
             </div>
+            {/* Removed duplicate Gatewick House & Gardens card meta section */}
           </section>
           {/* MakeEbook project */}
-          <section className="bt-design-project-section">
-            <div className="bt-design-project-image-wrap">
-              <img
-                src={makeEbookProject.image}
-                alt={makeEbookProject.title}
-                className="bt-design-project-image"
-                style={{
-                  opacity: portfolioItems[1]?.loaded ? 1 : 0,
-                  transition: 'opacity 0.5s',
-                  height: isMobile ? '40px' : '80px',
-                  width: 'auto',
-                  maxWidth: '100%',
-                  objectFit: 'contain',
-                  background: 'none',
-                  margin: '0 auto',
-                  display: 'block',
-                }}
-                onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === makeEbookProject.id ? { ...p, loaded: true } : p))}
-                loading="lazy"
-              />
+          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '32px 0 24px 0', marginBottom: 32, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.03)' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
+              <div className="bt-design-project-image-wrap" style={{ position: 'relative', marginTop: 0, background: '#f4f4f4', borderRadius: 20, minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{
+                  position: 'absolute',
+                  top: 20,
+                  left: 20,
+                  zIndex: 2,
+                  background: '#e3f0fb',
+                  color: '#2563a6',
+                  fontWeight: 500,
+                  fontSize: '0.98rem',
+                  borderRadius: 999,
+                  padding: '6px 18px',
+                  letterSpacing: 0.01,
+                  boxShadow: '0 1px 4px 0 rgba(0,0,0,0.03)',
+                  display: 'inline-block',
+                }}>
+                  Visual Identity & Website Build
+                </span>
+                {makeEbookProject.image.endsWith('.svg') ? (
+                  <img
+                    src={makeEbookProject.image}
+                    alt={makeEbookProject.title}
+                    className="bt-design-project-image"
+                    style={{
+                      opacity: portfolioItems[1]?.loaded ? 1 : 0,
+                      transition: 'opacity 0.5s',
+                      height: isMobile ? '40px' : '80px',
+                      width: 'auto',
+                      maxWidth: '100%',
+                      objectFit: 'contain',
+                      background: 'none',
+                      margin: '0 auto',
+                      display: 'block',
+                    }}
+                    onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === makeEbookProject.id ? { ...p, loaded: true } : p))}
+                    loading="lazy"
+                  />
+                ) : (
+                  <picture>
+                    <source srcSet={makeEbookProject.image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+                    <img
+                      src={makeEbookProject.image}
+                      alt={makeEbookProject.title}
+                      className="bt-design-project-image"
+                      style={{
+                        opacity: portfolioItems[1]?.loaded ? 1 : 0,
+                        transition: 'opacity 0.5s',
+                        height: isMobile ? '40px' : '80px',
+                        width: 'auto',
+                        maxWidth: '100%',
+                        objectFit: 'contain',
+                        background: 'none',
+                        margin: '0 auto',
+                        display: 'block',
+                      }}
+                      onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === makeEbookProject.id ? { ...p, loaded: true } : p))}
+                      loading="lazy"
+                    />
+                  </picture>
+                )}
+              </div>
             </div>
-            <div className="bt-design-project-meta">
-              <div className="bt-design-project-title">
-                {makeEbookProject.title}
+            <div style={{ padding: '32px 24px 0 24px' }}>
+              <div style={{ fontWeight: 700, fontSize: '1.25rem', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                MakeEbook
                 <a
                   href="https://neilmcardle.com/make-ebook"
                   target="_blank"
@@ -613,56 +722,24 @@ export default function Page() {
                   </svg>
                 </a>
               </div>
-              <div className="bt-design-project-category">{makeEbookProject.category}</div>
-              <div style={{ fontSize: '0.98rem', color: '#555', fontWeight: 500, marginTop: 2, marginBottom: 2 }}>
-                Visual Identity & Website Build
-              </div>
+              <div style={{ color: '#888', fontWeight: 400, fontSize: '1rem', marginBottom: 2, letterSpacing: 0.01 }}>EBOOK CREATION PLATFORM</div>
             </div>
+            {/* Removed duplicate MakeEbook card meta section and cleaned up stray code */}
           </section>
-          {/* Grace Church Greenwich group */}
           {/* Grace Church Greenwich group */}
           <section className="bt-design-project-section">
             <div className="bt-design-project-title" style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
               Grace Church Greenwich
-              <a
-                href="https://greenwich.church"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  marginLeft: 4,
-                  fontSize: '1.05rem',
-                  color: '#888',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  opacity: 0.8,
-                  transition: 'color 0.2s',
-                  verticalAlign: 'middle',
-                }}
-                aria-label="Open Grace Church Greenwich in new tab"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18" height="18" viewBox="0 0 20 20" fill="none"
-                  style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                >
-                  <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
-                </svg>
-              </a>
             </div>
-            <div
-              className="bt-design-project-category"
-              style={{
-                marginBottom: 12,
-                color: '#888',
-                fontWeight: 400,
-                fontSize: '1.08rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                lineHeight: 1.3,
-              }}
-            >
+            <div className="bt-design-project-category" style={{
+              marginBottom: 12,
+              color: '#888',
+              fontWeight: 400,
+              fontSize: '1.08rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
+              lineHeight: 1.3,
+            }}>
               EVENT FLYERS, BOOK COVERS, AND SERMON GRAPHICS
             </div>
             <div className="bt-design-gracechurch-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
