@@ -23,25 +23,40 @@ interface PortfolioItem {
 }
 
 // Sample portfolio data - first two are Coverly and MakeEbook with logos
-const portfolioData: Omit<PortfolioItem, 'loaded'>[] = [
-  {
-    id: 1,
-    title: "Coverly",
-    category: "Book Cover Generator Platform",
-    image: "/coverly-logo.svg"
-  },
-  {
-    id: 2,
-    title: "MakeEbook",
-    category: "Ebook Creation Tool",
-    image: "/make-ebook-logomark.svg"
-  },
+const coverlyProject = {
+  id: 1,
+  title: "Coverly",
+  category: "Book Cover Generator Platform",
+  image: "/coverly-logo.svg"
+};
+const nukSooProject = {
+  id: 12,
+  title: "Nuk Soo",
+  category: "The Dan Roberts Group",
+  image: "/nuk-soo.svg"
+};
+const gatewickProject = {
+  id: 13,
+  title: "Gatewick House & Gardens",
+  category: "Gatewick House and Gardens",
+  image: "/gatewick-house-logo.svg"
+};
+const makeEbookProject = {
+  id: 2,
+  title: "MakeEbook",
+  category: "Ebook Creation Tool",
+  image: "/make-ebook-logomark.svg"
+};
+const graceChurchProjects: Omit<PortfolioItem, 'loaded'>[] = [
   { id: 3, title: "Christianity Explored", category: "Event Flyer Design", image: "/christianity-explored.jpg" },
   { id: 4, title: "If Heaven Were Opened", category: "Event Flyer Design", image: "/if-heaven.jpg" },
   { id: 5, title: "The Man Who", category: "Event Flyer Design", image: "/man-who.jpg" },
   { id: 6, title: "Philippians", category: "Sermon Graphics", image: "/philippians.jpg" },
   { id: 7, title: "Missionary Pioneers", category: "Event Front Cover", image: "/pioneers.jpg" },
   { id: 8, title: "When I'm Gone", category: "Sermon Graphics", image: "/when-im-gone.jpg" },
+];
+
+const bannerOfTruthProjects: Omit<PortfolioItem, 'loaded'>[] = [
   { id: 9, title: "Brownlow North", category: "Book Cover Design", image: "/brownlow.jpg" },
   { id: 10, title: "The Child's Story Bible", category: "Book Cover Design", image: "/childs-story.jpg" },
   { id: 11, title: "The Pastor of Kilsyth", category: "Book Cover Design", image: "/pastor-kilsyth.jpg" },
@@ -56,7 +71,70 @@ export default function Page() {
   const email = "hello@betterthings.design";
 
   useEffect(() => {
-    setPortfolioItems(portfolioData.map(item => ({ ...item, loaded: false })));
+    // Only used for image loading state
+    setPortfolioItems([
+      { ...coverlyProject, loaded: false },
+      { ...nukSooProject, loaded: false },
+      { ...gatewickProject, loaded: false },
+      { ...makeEbookProject, loaded: false },
+      ...graceChurchProjects.map(item => ({ ...item, loaded: false })),
+      ...bannerOfTruthProjects.map(item => ({ ...item, loaded: false }))
+    ]);
+            {/* Gatewick House & Gardens project */}
+            <section className="bt1042-project-section">
+              <div className="bt1042-project-image-wrap">
+                <img
+                  src={gatewickProject.image}
+                  alt={gatewickProject.title}
+                  className="bt1042-project-image"
+                  style={{
+                    opacity: portfolioItems[2]?.loaded ? 1 : 0,
+                    transition: 'opacity 0.5s',
+                    height: '240px',
+                    width: 'auto',
+                    maxWidth: '100%',
+                    objectFit: 'contain',
+                    background: 'none',
+                    margin: '0 auto',
+                    display: 'block',
+                  }}
+                  onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === gatewickProject.id ? { ...p, loaded: true } : p))}
+                  loading="lazy"
+                />
+              </div>
+              <div className="bt1042-project-meta">
+                <div className="bt1042-project-title">
+                  {gatewickProject.title}
+                  <a
+                    href="https://www.instagram.com/gatewick_gardens/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      marginLeft: 4,
+                      fontSize: '1.05rem',
+                      color: '#888',
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      opacity: 0.8,
+                      transition: 'color 0.2s',
+                      verticalAlign: 'middle',
+                    }}
+                    aria-label="Open Gatewick House & Gardens in new tab"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18" height="18" viewBox="0 0 20 20" fill="none"
+                      style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                    >
+                      <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                    </svg>
+                  </a>
+                </div>
+                <div className="bt1042-project-category">{gatewickProject.category}</div>
+              </div>
+            </section>
   }, []);
 
   // Lazy loading for infinite scroll
@@ -115,7 +193,7 @@ export default function Page() {
             <div className="bt1042-sidebar-title">We design for tomorrow</div>
             <div className="bt1042-sidebar-desc">
               Better Things is a creative design studio transforming ideas into unforgettable brand experiences.<br/><br/>
-              We partner with visionaries from emerging start-ups to global leaders to create identities and products that resonate and endure.
+              We partner with start-ups to create identities and products that resonate and endure.
             </div>
           </div>
           <div className="bt1042-sidebar-section bt1042-sidebar-contact">
@@ -131,86 +209,335 @@ export default function Page() {
       {/* Main content (right) */}
       <main className="bt1042-main-content">
         <div className="bt1042-projects">
-          {portfolioItems.slice(0, visibleItems).map((item, index) => (
-            <section key={item.id} className="bt1042-project-section">
-              <div className="bt1042-project-image-wrap">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="bt1042-project-image"
-                  style={{ opacity: item.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
-                  onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === item.id ? { ...p, loaded: true } : p))}
-                  loading="lazy"
-                />
+          {/* Coverly project */}
+          <section className="bt1042-project-section">
+            <div className="bt1042-project-image-wrap">
+              <img
+                src={coverlyProject.image}
+                alt={coverlyProject.title}
+                className="bt1042-project-image"
+                style={{ opacity: portfolioItems[0]?.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
+                onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === coverlyProject.id ? { ...p, loaded: true } : p))}
+                loading="lazy"
+              />
+            </div>
+            <div className="bt1042-project-meta">
+              <div className="bt1042-project-title">
+                {coverlyProject.title}
+                <a
+                  href="https://coverly.figma.site/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    marginLeft: 4,
+                    fontSize: '1.05rem',
+                    color: '#888',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    opacity: 0.8,
+                    transition: 'color 0.2s',
+                    verticalAlign: 'middle',
+                  }}
+                  aria-label="Open Coverly in new tab"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18" height="18" viewBox="0 0 20 20" fill="none"
+                    style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                  >
+                    <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                  </svg>
+                </a>
               </div>
-              <div className="bt1042-project-meta">
-                <div className="bt1042-project-title">
-                  {item.title}
-                  {item.title === "Coverly" && (
-                    <a
-                      href="https://coverly.figma.site/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        marginLeft: 4,
-                        fontSize: '1.05rem',
-                        color: '#888',
-                        textDecoration: 'none',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        opacity: 0.8,
-                        transition: 'color 0.2s',
-                        verticalAlign: 'middle',
-                      }}
-                      aria-label="Open Coverly in new tab"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18" height="18" viewBox="0 0 20 20" fill="none"
-                        style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                      >
-                        <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
-                      </svg>
-                    </a>
-                  )}
-                  {item.title === "MakeEbook" && (
-                    <a
-                      href="https://neilmcardle.com/make-ebook"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        marginLeft: 4,
-                        fontSize: '1.05rem',
-                        color: '#888',
-                        textDecoration: 'none',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        opacity: 0.8,
-                        transition: 'color 0.2s',
-                        verticalAlign: 'middle',
-                      }}
-                      aria-label="Open MakeEbook in new tab"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18" height="18" viewBox="0 0 20 20" fill="none"
-                        style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                      >
-                        <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
-                      </svg>
-                    </a>
-                  )}
+              <div className="bt1042-project-category">{coverlyProject.category}</div>
+            </div>
+          </section>
+          {/* Nuk Soo project */}
+          <section className="bt1042-project-section">
+            <div className="bt1042-project-image-wrap">
+              <img
+                src={nukSooProject.image}
+                alt={nukSooProject.title}
+                className="bt1042-project-image"
+                style={{
+                  opacity: portfolioItems[1]?.loaded ? 1 : 0,
+                  transition: 'opacity 0.5s',
+                  height: '240px',
+                  width: 'auto',
+                  maxWidth: '100%',
+                  objectFit: 'contain',
+                  background: 'none',
+                  margin: '0 auto',
+                  display: 'block',
+                }}
+                onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === nukSooProject.id ? { ...p, loaded: true } : p))}
+                loading="lazy"
+              />
+            </div>
+            <div className="bt1042-project-meta">
+              <div className="bt1042-project-title">
+                {nukSooProject.title}
+                <a
+                  href="https://danrobertsgroup.com/nuksoo/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    marginLeft: 4,
+                    fontSize: '1.05rem',
+                    color: '#888',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    opacity: 0.8,
+                    transition: 'color 0.2s',
+                    verticalAlign: 'middle',
+                  }}
+                  aria-label="Open Nuk Soo in new tab"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18" height="18" viewBox="0 0 20 20" fill="none"
+                    style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                  >
+                    <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                  </svg>
+                </a>
+              </div>
+              <div className="bt1042-project-category">{nukSooProject.category}</div>
+            </div>
+          </section>
+          {/* Gatewick House & Gardens project */}
+          <section className="bt1042-project-section">
+            <div className="bt1042-project-image-wrap">
+              <img
+                src={gatewickProject.image}
+                alt={gatewickProject.title}
+                className="bt1042-project-image"
+                style={{
+                  opacity: portfolioItems[2]?.loaded ? 1 : 0,
+                  transition: 'opacity 0.5s',
+                  height: '240px',
+                  width: 'auto',
+                  maxWidth: '100%',
+                  objectFit: 'contain',
+                  background: 'none',
+                  margin: '0 auto',
+                  display: 'block',
+                }}
+                onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === gatewickProject.id ? { ...p, loaded: true } : p))}
+                loading="lazy"
+              />
+            </div>
+            <div className="bt1042-project-meta">
+              <div className="bt1042-project-title">
+                {gatewickProject.title}
+                <a
+                  href="https://www.instagram.com/gatewick_gardens/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    marginLeft: 4,
+                    fontSize: '1.05rem',
+                    color: '#888',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    opacity: 0.8,
+                    transition: 'color 0.2s',
+                    verticalAlign: 'middle',
+                  }}
+                  aria-label="Open Gatewick House & Gardens in new tab"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18" height="18" viewBox="0 0 20 20" fill="none"
+                    style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                  >
+                    <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                  </svg>
+                </a>
+              </div>
+              <div className="bt1042-project-category">{gatewickProject.category}</div>
+            </div>
+          </section>
+          {/* MakeEbook project */}
+          <section className="bt1042-project-section">
+            <div className="bt1042-project-image-wrap">
+              <img
+                src={makeEbookProject.image}
+                alt={makeEbookProject.title}
+                className="bt1042-project-image"
+                style={{ opacity: portfolioItems[1]?.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
+                onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === makeEbookProject.id ? { ...p, loaded: true } : p))}
+                loading="lazy"
+              />
+            </div>
+            <div className="bt1042-project-meta">
+              <div className="bt1042-project-title">
+                {makeEbookProject.title}
+                <a
+                  href="https://neilmcardle.com/make-ebook"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    marginLeft: 4,
+                    fontSize: '1.05rem',
+                    color: '#888',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    opacity: 0.8,
+                    transition: 'color 0.2s',
+                    verticalAlign: 'middle',
+                  }}
+                  aria-label="Open MakeEbook in new tab"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18" height="18" viewBox="0 0 20 20" fill="none"
+                    style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                  >
+                    <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                  </svg>
+                </a>
+              </div>
+              <div className="bt1042-project-category">{makeEbookProject.category}</div>
+            </div>
+          </section>
+          {/* Grace Church Greenwich group */}
+          {/* Grace Church Greenwich group */}
+          <section className="bt1042-project-section">
+            <div className="bt1042-project-title" style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+              Grace Church Greenwich
+              <a
+                href="https://greenwich.church"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  marginLeft: 4,
+                  fontSize: '1.05rem',
+                  color: '#888',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  opacity: 0.8,
+                  transition: 'color 0.2s',
+                  verticalAlign: 'middle',
+                }}
+                aria-label="Open Grace Church Greenwich in new tab"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18" height="18" viewBox="0 0 20 20" fill="none"
+                  style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                >
+                  <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                </svg>
+              </a>
+            </div>
+            <div
+              className="bt1042-project-category"
+              style={{
+                marginBottom: 12,
+                color: '#888',
+                fontWeight: 400,
+                fontSize: '1.08rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                lineHeight: 1.3,
+              }}
+            >
+              EVENT FLYERS, BOOK COVERS, AND SERMON GRAPHICS
+            </div>
+            <div className="bt1042-gracechurch-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+              {graceChurchProjects.map((item, idx) => (
+                <div key={item.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
+                  <div className="bt1042-project-image-wrap" style={{ aspectRatio: '1/1', minHeight: 0 }}>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="bt1042-project-image"
+                      style={{ opacity: portfolioItems[idx+2]?.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
+                      onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === item.id ? { ...p, loaded: true } : p))}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="bt1042-project-title" style={{ fontSize: '1.08rem', fontWeight: 600 }}>{item.title}</div>
+                  <div className="bt1042-project-category" style={{ fontSize: '0.98rem' }}>{item.category}</div>
                 </div>
-                <div className="bt1042-project-category">{item.category}</div>
-              </div>
-            </section>
-          ))}
-          {/* Load more trigger */}
-          {visibleItems < portfolioItems.length && (
-            <div ref={loadMoreRef} style={{ height: '20px', margin: '40px 0' }} />
-          )}
+              ))}
+            </div>
+          </section>
+          {/* Banner of Truth group */}
+          <section className="bt1042-project-section">
+            <div className="bt1042-project-title" style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+              Banner of Truth
+              <a
+                href="https://banneroftruth.org/uk/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  marginLeft: 4,
+                  fontSize: '1.05rem',
+                  color: '#888',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  opacity: 0.8,
+                  transition: 'color 0.2s',
+                  verticalAlign: 'middle',
+                }}
+                aria-label="Open Banner of Truth in new tab"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18" height="18" viewBox="0 0 20 20" fill="none"
+                  style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                >
+                  <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                </svg>
+              </a>
+            </div>
+            <div
+              className="bt1042-project-category"
+              style={{
+                marginBottom: 12,
+                color: '#888',
+                fontWeight: 400,
+                fontSize: '1.08rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                lineHeight: 1.3,
+              }}
+            >
+              BOOK COVER DESIGN
+            </div>
+            <div className="bt1042-gracechurch-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+              {bannerOfTruthProjects.map((item, idx) => (
+                <div key={item.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
+                  <div className="bt1042-project-image-wrap" style={{ aspectRatio: '1/1', minHeight: 0 }}>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="bt1042-project-image"
+                      style={{ opacity: portfolioItems[idx+graceChurchProjects.length+2]?.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
+                      onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === item.id ? { ...p, loaded: true } : p))}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="bt1042-project-title" style={{ fontSize: '1.08rem', fontWeight: 600 }}>{item.title}</div>
+                  <div className="bt1042-project-category" style={{ fontSize: '0.98rem' }}>{item.category}</div>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       </main>
     </div>
