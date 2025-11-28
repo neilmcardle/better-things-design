@@ -40,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body style={{ fontFamily: "Aspekta, Inter, Arial, Helvetica, sans-serif" }}>
         {children}
         <WidowFix />
       </body>

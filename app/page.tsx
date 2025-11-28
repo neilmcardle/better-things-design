@@ -22,25 +22,32 @@ interface PortfolioItem {
   loaded: boolean;
 }
 
-// Sample portfolio data - replace with your actual work
+// Sample portfolio data - first two are Coverly and MakeEbook with logos
 const portfolioData: Omit<PortfolioItem, 'loaded'>[] = [
-  { id: 1, title: "Christianity Explored", category: "Event Flyer Design", image: "/christianity-explored.jpg" },
-  { id: 2, title: "If Heaven Were Opened", category: "Event Flyer Design", image: "/if-heaven.jpg" },
-  { id: 3, title: "The Man Who", category: "Event Flyer Design", image: "/man-who.jpg" },
-  { id: 4, title: "Philippians", category: "Sermon Graphics", image: "/philippians.jpg" },
-  { id: 5, title: "Missionary Pioneers", category: "Event Front Cover", image: "/pioneers.jpg" },
-  { id: 6, title: "When I'm Gone", category: "Sermon Graphics", image: "/when-im-gone.jpg" },
-  { id: 7, title: "Brownlow North", category: "Book Cover Design", image: "/brownlow.jpg" },
-  { id: 8, title: "The Child's Story Bible", category: "Book Cover Design", image: "/childs-story.jpg" },
-  { id: 9, title: "The Pastor of Kilsyth", category: "Book Cover Design", image: "/pastor-kilsyth.jpg" },
+  {
+    id: 1,
+    title: "Coverly",
+    category: "Book Cover Generator Platform",
+    image: "/coverly-logo.svg"
+  },
+  {
+    id: 2,
+    title: "MakeEbook",
+    category: "Ebook Creation Tool",
+    image: "/make-ebook-logomark.svg"
+  },
+  { id: 3, title: "Christianity Explored", category: "Event Flyer Design", image: "/christianity-explored.jpg" },
+  { id: 4, title: "If Heaven Were Opened", category: "Event Flyer Design", image: "/if-heaven.jpg" },
+  { id: 5, title: "The Man Who", category: "Event Flyer Design", image: "/man-who.jpg" },
+  { id: 6, title: "Philippians", category: "Sermon Graphics", image: "/philippians.jpg" },
+  { id: 7, title: "Missionary Pioneers", category: "Event Front Cover", image: "/pioneers.jpg" },
+  { id: 8, title: "When I'm Gone", category: "Sermon Graphics", image: "/when-im-gone.jpg" },
+  { id: 9, title: "Brownlow North", category: "Book Cover Design", image: "/brownlow.jpg" },
+  { id: 10, title: "The Child's Story Bible", category: "Book Cover Design", image: "/childs-story.jpg" },
+  { id: 11, title: "The Pastor of Kilsyth", category: "Book Cover Design", image: "/pastor-kilsyth.jpg" },
 ];
 
 export default function Page() {
-  const heroRef = useRef<HTMLDivElement | null>(null);
-  const [isLight, setIsLight] = useState(false);
-  const [particles, setParticles] = useState<Particle[]>([]);
-  const [showEmail, setShowEmail] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [visibleItems, setVisibleItems] = useState(6);
   const [touchedCardId, setTouchedCardId] = useState<number | null>(null);
@@ -49,23 +56,7 @@ export default function Page() {
   const email = "hello@betterthings.design";
 
   useEffect(() => {
-    // Initialize portfolio items
     setPortfolioItems(portfolioData.map(item => ({ ...item, loaded: false })));
-    
-    // Generate glowing firefly particles
-    const generatedParticles: Particle[] = [];
-    for (let i = 0; i < 40; i++) {
-      generatedParticles.push({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        delay: `${Math.random() * 10}s`,
-        duration: `${15 + Math.random() * 15}s`,
-        size: 1.5 + Math.random() * 2.5,
-        glowIntensity: 8 + Math.random() * 12
-      });
-    }
-    setParticles(generatedParticles);
   }, []);
 
   // Lazy loading for infinite scroll
@@ -77,11 +68,9 @@ export default function Page() {
         }
       });
     });
-
     if (loadMoreRef.current && observerRef.current) {
       observerRef.current.observe(loadMoreRef.current);
     }
-
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
@@ -89,28 +78,7 @@ export default function Page() {
     };
   }, [visibleItems, portfolioItems.length]);
 
-  const handleScrollToGallery = () => {
-    const galleryElement = document.querySelector('.portfolio-gallery');
-    if (galleryElement) {
-      galleryElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleButtonClick = () => {
-    setShowEmail((prev: boolean) => !prev);
-    setCopied(false);
-  };
-
-  const handleCopyClick = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await navigator.clipboard.writeText(email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1200);
-    } catch (err) {
-      // fallback or error handling
-    }
-  };
+  // No-op: removed old hero/email handlers for new layout
 
   const handleImageLoad = useCallback((id: number) => {
     setPortfolioItems(prev => prev.map(item => 
@@ -118,21 +86,7 @@ export default function Page() {
     ));
   }, []);
 
-  // Observe when hero leaves the viewport to switch the below-hero area to a light theme
-  useEffect(() => {
-    const heroEl = heroRef.current;
-    if (!heroEl) return;
-
-    const io = new IntersectionObserver((entries) => {
-      const e = entries[0];
-      if (!e) return;
-      // when hero is not intersecting the viewport, enable light theme below
-      setIsLight(!e.isIntersecting);
-    }, { threshold: 0.15 });
-
-    io.observe(heroEl);
-    return () => io.disconnect();
-  }, [heroRef]);
+  // No-op: removed hero intersection observer for new layout
 
   // Entry observer for the explanatory copy section
   const copyRef = useRef<HTMLDivElement | null>(null);
@@ -152,396 +106,113 @@ export default function Page() {
   }, [copyRef]);
 
   return (
-    <div
-      className="relative w-full min-h-screen"
-      style={{
-        background: isLight ? '#ffffff' : '#000',
-        transition: 'background-color 360ms ease',
-      }}
-    >
-      {/* Hero Section */}
-      <div ref={heroRef} className="relative w-full h-screen overflow-hidden bg-black">
-        {/* Conic Gradient Glow Effect */}
-        <div 
-          className="absolute pointer-events-none glow-effect"
-          style={{
-            width: '80vw',
-            height: '80vh',
-            top: '-30%',
-            right: '-30%',
-            background: 'conic-gradient(from 90deg at 35% -1% in lab, rgb(255,255,255) 7.2deg, rgb(255,208,134) 14.4deg, rgba(17,17,17,0) 36deg, rgba(17,17,17,0) 342deg, rgb(255,255,255) 360deg)',
-            zIndex: 0,
-            filter: 'blur(40px)'
-          }}
-        />
-
-        {/* Glowing Firefly Particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
-          {particles.map((particle) => (
-            <div
-              key={particle.id}
-              className="absolute firefly"
-              style={{
-                left: particle.left,
-                top: particle.top,
-                animationDelay: particle.delay,
-                animationDuration: particle.duration
-              }}
-            >
-              <div 
-                className="rounded-full bg-white firefly-glow"
-                style={{
-                  width: `${particle.size}px`,
-                  height: `${particle.size}px`,
-                  animationDelay: `${particle.delay}, ${Math.random() * 4}s`,
-                  animationDuration: `${particle.duration}, 4s`
-                }}
-              />
+    <div className="bt1042-root-layout">
+      {/* Sidebar (left) */}
+      <aside className="bt1042-sidebar">
+        <div className="bt1042-sidebar-content">
+          <div className="bt1042-logo">BETTER<br/>THINGS</div>
+          <div className="bt1042-sidebar-section">
+            <div className="bt1042-sidebar-title">We design for tomorrow</div>
+            <div className="bt1042-sidebar-desc">
+              Better Things is a creative design studio transforming ideas into unforgettable brand experiences.<br/><br/>
+              We partner with visionaries from emerging start-ups to global leaders to create identities and products that resonate and endure.
             </div>
-          ))}
-        </div>
-
-        {/* Main Text */}
-        <div 
-          className="absolute inset-0 flex flex-col items-center justify-center px-4"
-          style={{ zIndex: 1 }}
-        >
-          <h1 
-            className="main-text text-white text-center mb-8"
-            style={{
-              fontFamily: 'Inter, Arial, Helvetica, sans-serif',
-              fontWeight: 800,
-              letterSpacing: 'calc(-0.04em - 2px)',
-              textShadow: '0 2px 8px rgba(255, 255, 255, 0.35)',
-              animation: 'textReveal 2s ease-in-out forwards',
-              opacity: 0
-            }}
-          >
-            BETTER THINGS
-          </h1>
-          
-          {/* Scroll Indicator */}
-          <div 
-            className="scroll-indicator absolute bottom-16 animate-bounce cursor-pointer"
-            style={{
-              animation: 'scrollIndicator 2s ease-in-out 3s forwards, bounce 2s infinite 3s',
-              opacity: 0
-            }}
-            onClick={handleScrollToGallery}
-          >
-            <svg 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="rgba(255, 255, 255, 0.6)" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            >
-              <path d="M7 13l3 3 3-3"></path>
-              <path d="M7 6l3 3 3-3"></path>
-            </svg>
+          </div>
+          <div className="bt1042-sidebar-section bt1042-sidebar-contact">
+            <div>Contact</div>
+            <a href="mailto:hello@betterthings.design" className="bt1042-sidebar-email">hello@betterthings.design</a>
+          </div>
+          <div className="bt1042-sidebar-footer">
+            <img src="/neilmcardle-avatar.png" alt="Neil McArdle" className="bt1042-sidebar-avatar" />
+            <a href="https://neilmcardle.com" target="_blank" rel="noopener noreferrer">Founded by Neil McArdle</a>
           </div>
         </div>
-
-        {/* Button - Desktop (Top Center) */}
-        <button
-          className="hidden md:flex items-center gap-2 px-6 py-3 rounded-full glass-button transition-all duration-500"
-          style={{
-            position: 'fixed',
-            top: '24px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(255, 255, 255, 0.08)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            boxShadow: '0 4px 24px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.2)',
-            color: 'white',
-            fontSize: '1.25rem',
-            fontWeight: 600,
-            zIndex: 2,
-            animation: 'buttonFadeIn 1.5s ease-in-out 0.5s forwards',
-            opacity: 0
-          }}
-          onClick={handleButtonClick}
-        >
-          <Mail className="w-5 h-5" />
-          {showEmail ? (
-            <>
-              <span>{email}</span>
-              <span
-                title={copied ? "Copied!" : "Copy"}
-                style={{ cursor: "pointer", display: "flex", alignItems: "center", marginLeft: 6, position: "relative" }}
-                onClick={handleCopyClick}
-              >
-                <Copy className={`w-5 h-5 ${copied ? "text-green-400" : ""}`} />
-                {copied && (
-                  <span
-                    style={{
-                      marginLeft: 4,
-                      fontSize: '0.95em',
-                      color: "#22c55e",
-                      fontWeight: 500,
-                      transition: "opacity 0.2s",
-                      opacity: copied ? 1 : 0,
-                      position: "relative",
-                    }}
-                  >
-                    Copied
-                  </span>
-                )}
-              </span>
-            </>
-          ) : null}
-        </button>
-
-        {/* Button - Mobile (Bottom Center) */}
-        <button
-          className="flex md:hidden items-center gap-2 px-5 py-2.5 rounded-full glass-button-mobile transition-all duration-500 whitespace-nowrap"
-          style={{
-            position: 'fixed',
-            bottom: '44px', // Ensures at least 16px above the footer
-            left: '50%',
-            transform: 'translateX(-50%)',
-            maxWidth: 'calc(100% - 48px)',
-            background: 'rgba(255, 255, 255, 0.08)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            boxShadow: '0 4px 24px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.2)',
-            color: 'white',
-            fontSize: '1.1rem',
-            fontWeight: 600,
-            zIndex: 2,
-            animation: 'buttonFadeIn 1.5s ease-in-out 0.5s forwards',
-            opacity: 0
-          }}
-          onClick={handleButtonClick}
-        >
-          <Mail className="w-5 h-5" />
-          {showEmail ? (
-            <>
-              <span className="whitespace-nowrap">{email}</span>
-              <span
-                title={copied ? "Copied!" : "Copy"}
-                style={{ cursor: "pointer", display: "flex", alignItems: "center", marginLeft: 6, position: "relative" }}
-                onClick={handleCopyClick}
-              >
-                <Copy className={`w-5 h-5 ${copied ? "text-green-400" : ""}`} />
-                {copied && (
-                  <span
-                    style={{
-                      marginLeft: 4,
-                      fontSize: '0.95em',
-                      color: "#22c55e",
-                      fontWeight: 500,
-                      transition: "opacity 0.2s",
-                      opacity: copied ? 1 : 0,
-                      position: "relative",
-                    }}
-                  >
-                    Copied
-                  </span>
-                )}
-              </span>
-            </>
-          ) : null}
-        </button>
-
-        {/* Footer: Founded by Neil McArdle with miniature profile pic */}
-        <div
-          style={{
-              position: 'fixed',
-              bottom: 8,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              zIndex: 10,
-              display: 'flex',
-              alignItems: 'center',
-              fontSize: '0.82rem',
-              color: isLight ? '#374151' : '#bbb',
-              gap: '6px',
-              transition: 'color 360ms ease, border-color 360ms ease',
-            }}
-        >
-          <img
-            src="/neilmcardle-avatar.png"
-            alt="Neil McArdle"
-            style={{
-              width: 20,
-              height: 20,
-              objectFit: 'cover',
-              borderRadius: '50%',
-              borderWidth: 1,
-              borderStyle: 'solid',
-              borderColor: isLight ? '#ddd' : '#eee',
-              transition: 'border-color 360ms ease',
-            }}
-          />
-          <a
-            href="https://neilmcardle.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: isLight ? '#374151' : '#bbb',
-              textDecoration: 'underline',
-              fontWeight: 400,
-              letterSpacing: '-0.5px',
-              transition: 'color 360ms ease',
-            }}
-          >
-            Founded by Neil McArdle
-          </a>
-        </div>
-        {/* Brand strip intentionally left out of the hero so it sits below the fold */}
-      </div>
-
-      {/* Brands strip: placed below the hero so it appears just below the fold */}
-      <BrandStrip light={isLight} />
-
-        {/* Section heading for the gallery (moved into the gallery container below) */}
-
-      {/* Portfolio Gallery */}
-      <div 
-        className="portfolio-gallery"
-        style={{
-          position: 'relative',
-          width: '100%',
-          backgroundColor: isLight ? '#ffffff' : '#000',
-          zIndex: 1,
-          padding: '8px 20px 130px',
-          marginTop: '154px',
-          transition: 'background-color 360ms ease',
-        }}
-      >
-        <div className="mx-auto max-w-6xl px-6 flex items-center justify-center" style={{ paddingTop: 6 }}>
-          <h2
-            id="designs-heading"
-            style={{
-              color: '#9CA3AF',
-              textTransform: 'uppercase',
-              letterSpacing: '0.12em',
-              fontWeight: 600,
-              fontSize: '0.875rem',
-              margin: 0,
-              marginBottom: 8,
-              textAlign: 'center'
-            }}
-          >
-            DESIGNS WE'VE MADE
-          </h2>
-        </div>
-
-        <div 
-          className="gallery-grid"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '8px',
-            maxWidth: '1400px',
-            margin: '0 auto',
-          }}
-        >
+      </aside>
+      {/* Main content (right) */}
+      <main className="bt1042-main-content">
+        <div className="bt1042-projects">
           {portfolioItems.slice(0, visibleItems).map((item, index) => (
-            <PortfolioCard 
-              key={item.id} 
-              item={item} 
-              index={index}
-              onImageLoad={handleImageLoad}
-              touchedCardId={touchedCardId}
-              setTouchedCardId={setTouchedCardId}
-            />
+            <section key={item.id} className="bt1042-project-section">
+              <div className="bt1042-project-image-wrap">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="bt1042-project-image"
+                  style={{ opacity: item.loaded ? 1 : 0, transition: 'opacity 0.5s' }}
+                  onLoad={() => setPortfolioItems(prev => prev.map(p => p.id === item.id ? { ...p, loaded: true } : p))}
+                  loading="lazy"
+                />
+              </div>
+              <div className="bt1042-project-meta">
+                <div className="bt1042-project-title">
+                  {item.title}
+                  {item.title === "Coverly" && (
+                    <a
+                      href="https://coverly.figma.site/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        marginLeft: 4,
+                        fontSize: '1.05rem',
+                        color: '#888',
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        opacity: 0.8,
+                        transition: 'color 0.2s',
+                        verticalAlign: 'middle',
+                      }}
+                      aria-label="Open Coverly in new tab"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18" height="18" viewBox="0 0 20 20" fill="none"
+                        style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                      >
+                        <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                      </svg>
+                    </a>
+                  )}
+                  {item.title === "MakeEbook" && (
+                    <a
+                      href="https://neilmcardle.com/make-ebook"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        marginLeft: 4,
+                        fontSize: '1.05rem',
+                        color: '#888',
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        opacity: 0.8,
+                        transition: 'color 0.2s',
+                        verticalAlign: 'middle',
+                      }}
+                      aria-label="Open MakeEbook in new tab"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18" height="18" viewBox="0 0 20 20" fill="none"
+                        style={{ marginLeft: 0, marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                      >
+                        <path d="M7 13L13 7M13 7H8M13 7V12" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <rect x="3.75" y="3.75" width="12.5" height="12.5" rx="2.25" stroke="#888" strokeWidth="1.5"/>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+                <div className="bt1042-project-category">{item.category}</div>
+              </div>
+            </section>
           ))}
+          {/* Load more trigger */}
+          {visibleItems < portfolioItems.length && (
+            <div ref={loadMoreRef} style={{ height: '20px', margin: '40px 0' }} />
+          )}
         </div>
-        
-        {/* Load more trigger */}
-        {visibleItems < portfolioItems.length && (
-          <div 
-            ref={loadMoreRef}
-            style={{
-              height: '20px',
-              margin: '40px 0',
-            }}
-          />
-        )}
-      </div>
-      {/* Centered explanatory copy (Altalogy-like) */}
-      <section
-        ref={copyRef}
-        aria-labelledby="what-we-do-heading"
-        style={{
-          maxWidth: 820,
-          margin: '24px auto',
-          padding: '0 24px',
-          color: isLight ? '#111827' : '#ffffff',
-          textAlign: 'center',
-          fontFamily: 'Inter, Arial, Helvetica, sans-serif',
-          opacity: copyVisible ? 1 : 0,
-          transform: copyVisible ? 'translateY(0)' : 'translateY(8px)',
-          transition: 'opacity 420ms ease, transform 420ms ease'
-        }}
-      >
-        <div style={{ fontSize: '0.75rem', letterSpacing: '0.14em', color: isLight ? '#6B7280' : 'rgba(255,255,255,0.65)', textTransform: 'uppercase', marginBottom: 10 }}>
-          WHAT BETTER THINGS DOES?
-        </div>
-
-        <h3
-          id="what-we-do-heading"
-          style={{
-            fontSize: '1.15rem',
-            fontWeight: 600,
-            lineHeight: 1.6,
-            margin: '8px 0 14px',
-            color: isLight ? '#111827' : '#fff'
-          }}
-        >
-          At Better Things, we distill your essence into designs the world feels. From logo marks and typologies to print/digital guidelines, web/mobile interfaces, and full-site builds.
-        </h3>
-
-        {/* (Removed per user request) */}
-
-        <div style={{ width: 40, height: 1, background: isLight ? '#E5E7EB' : 'rgba(255,255,255,0.18)', margin: '28px auto' }} />
-
-        <div style={{ fontSize: '0.85rem', letterSpacing: '0.02em', color: isLight ? '#6B7280' : 'rgba(255,255,255,0.7)', textTransform: 'uppercase', marginBottom: 12 }}>
-          CAN I WORK WITH YOU ON WEBSITE OR PRODUCT DESIGN, THEN IMPLEMENT ELSEWHERE?
-        </div>
-
-        <div style={{ fontSize: '1.15rem', lineHeight: 1.6, color: isLight ? '#111827' : '#fff', marginBottom: 18 }}>
-          <p style={{ marginTop: 0, fontWeight: 600, marginBottom: 8 }}>
-            For websites, we deliver fully implemented sites. No handoffs. Visions often fade in external development environments; the live site matters, not only mocks.
-          </p>
-          <p style={{ margin: 0, fontWeight: 600 }}>
-            Though for product UI (startups especially), yes: we design demos of builds to make them feel real.
-          </p>
-        </div>
-
-        <div style={{ width: 40, height: 1, background: isLight ? '#E5E7EB' : 'rgba(255,255,255,0.18)', margin: '20px auto' }} />
-
-        <div style={{ fontSize: '0.85rem', letterSpacing: '0.02em', color: isLight ? '#6B7280' : 'rgba(255,255,255,0.7)', textTransform: 'uppercase', marginBottom: 12 }}>
-          DO YOU OFFER GRAPHIC DESIGN?
-        </div>
-
-        <div style={{ fontSize: '1.15rem', lineHeight: 1.6, color: isLight ? '#111827' : '#fff', marginBottom: 40 }}>
-          <p style={{ marginTop: 0, fontWeight: 600 }}>
-            While we don't offer graphic design as a standalone service, it's typically part of a brand identity package.
-          </p>
-          <p style={{ margin: '8px 0', fontWeight: 600 }}>
-            We know visuals are often your most urgent need, so we're happy to focus on visual design to support your immediate needs and ensure it aligns with the future of your brand.
-          </p>
-        </div>
-      </section>
-
-      {/* Spacer to ensure the final gallery row isn't clipped by fixed UI */}
-      <div
-        aria-hidden="true"
-        style={{
-          height: 'calc(env(safe-area-inset-bottom, 0px) + 260px)',
-          width: '100%',
-          background: 'transparent'
-        }}
-      />
+      </main>
     </div>
   );
 }
