@@ -221,7 +221,7 @@ export default function Page() {
               background: '#fff',
               width: '80vw',
               maxWidth: 340,
-              boxShadow: '2px 0 16px rgba(0,0,0,0.08)',
+
               overflowY: 'auto',
               display: 'flex',
               flexDirection: 'column',
@@ -330,7 +330,7 @@ Mixed Martial Arts Fitness
 Visual Identitybt-design-main-content">
         <div className="bt-design-projects">
           {/* Coverly project */}
-          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '32px 0 24px 0', marginBottom: 32, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.03)' }}>
+          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '0 0 24px 0', marginBottom: 32 }}>
             <div style={{ position: 'relative', width: '100%' }}>
               <div className="bt-design-project-image-wrap" style={{ position: 'relative', marginTop: 0, background: '#f4f4f4', borderRadius: 20, minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{
@@ -345,7 +345,7 @@ Visual Identitybt-design-main-content">
                   borderRadius: 999,
                   padding: '6px 18px',
                   letterSpacing: 0.01,
-                  boxShadow: '0 1px 4px 0 rgba(0,0,0,0.03)',
+
                   display: 'inline-block',
                 }}>
                   Visual Identity & Website Build
@@ -430,7 +430,7 @@ Visual Identitybt-design-main-content">
             {/* Removed duplicate Coverly card meta section */}
           </section>
           {/* Nuk Soo project */}
-          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '32px 0 24px 0', marginBottom: 32, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.03)' }}>
+          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '0 0 24px 0', marginBottom: 32 }}>
             <div style={{ position: 'relative', width: '100%' }}>
               <div className="bt-design-project-image-wrap" style={{ position: 'relative', marginTop: 0, background: '#f4f4f4', borderRadius: 20, minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{
@@ -445,7 +445,7 @@ Visual Identitybt-design-main-content">
                   borderRadius: 999,
                   padding: '6px 18px',
                   letterSpacing: 0.01,
-                  boxShadow: '0 1px 4px 0 rgba(0,0,0,0.03)',
+
                   display: 'inline-block',
                 }}>
                   Visual Identity
@@ -529,7 +529,7 @@ Visual Identitybt-design-main-content">
             {/* Removed duplicate Nuk Soo card meta section */}
           </section>
           {/* Gatewick House & Gardens project */}
-          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '32px 0 24px 0', marginBottom: 32, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.03)' }}>
+          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '0 0 24px 0', marginBottom: 32 }}>
             <div style={{ position: 'relative', width: '100%' }}>
               <div className="bt-design-project-image-wrap" style={{ position: 'relative', marginTop: 0, background: '#f4f4f4', borderRadius: 20, minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{
@@ -544,7 +544,7 @@ Visual Identitybt-design-main-content">
                   borderRadius: 999,
                   padding: '6px 18px',
                   letterSpacing: 0.01,
-                  boxShadow: '0 1px 4px 0 rgba(0,0,0,0.03)',
+
                   display: 'inline-block',
                 }}>
                   Visual Identity & On-Site Signage
@@ -628,7 +628,7 @@ Visual Identitybt-design-main-content">
             {/* Removed duplicate Gatewick House & Gardens card meta section */}
           </section>
           {/* MakeEbook project */}
-          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '32px 0 24px 0', marginBottom: 32, boxShadow: '0 2px 16px 0 rgba(0,0,0,0.03)' }}>
+          <section className="bt-design-project-section" style={{ background: '#fafbfc', borderRadius: 24, padding: '0 0 24px 0', marginBottom: 32 }}>
             <div style={{ position: 'relative', width: '100%' }}>
               <div className="bt-design-project-image-wrap" style={{ position: 'relative', marginTop: 0, background: '#f4f4f4', borderRadius: 20, minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{
@@ -643,7 +643,7 @@ Visual Identitybt-design-main-content">
                   borderRadius: 999,
                   padding: '6px 18px',
                   letterSpacing: 0.01,
-                  boxShadow: '0 1px 4px 0 rgba(0,0,0,0.03)',
+
                   display: 'inline-block',
                 }}>
                   Visual Identity & Website Build
